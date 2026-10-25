@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyBpZD0iTG9nb3MiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEyMCAxMjAiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojYTQxZTM1O30uY2xzLTJ7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48dGl0bGU+VGVtcGxlLUxvZ28tVC1IZWFkZXI8L3RpdGxlPjxyZWN0IGNsYXNzPSJjbHMtMSIgeD0iLTAuMTciIHk9Ii0wLjE3IiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMC4yOCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxOS41NiAxMi45OCAxOS41NiA0NS42IDI2LjU1IDQ1LjYgMjYuNTUgMTkuNDcgOTMuNDQgMTkuNDcgOTMuNDQgNDUuNiAxMDAuMSA0NS42IDEwMC4xIDEyLjk4IDE5LjU2IDEyLjk4Ii8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjM3LjUzIDg2LjAzIDM3LjUzIDkyLjY5IDU2IDkyLjY5IDU2IDI3LjYzIDM0LjM3IDI3LjYzIDM0LjM3IDQ1LjYgNDEuMTkgNDUuNiA0MS4xOSAzNC40NCA0OS4xOCAzNC40NCA0OS4xOCA4Ni4wMyAzNy41MyA4Ni4wMyAzNy41MyA4Ni4wMyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSI2NC4wNyAyNy41NCA2NC4wNyA5Mi42MSA4Mi41NCA5Mi42MSA4Mi41NCA4NS45NSA3MC44OSA4NS45NSA3MC44OSAzNC4zNiA3OC44OCAzNC4zNiA3OC44OCA0NS42IDg1LjcxIDQ1LjYgODUuNzEgMjcuNTQgNzAuODkgMjcuNTQgNjQuMDcgMjcuNTQiLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMzcuNTMgMTA2Ljk2IDgyLjU0IDEwNi45NiA4Mi41NCAxMDAuMzggMzcuNTMgMTAwLjM4IDM3LjUzIDEwNi45NiAzNy41MyAxMDYuOTYiLz48L3N2Zz4=">
+<!-- Blocks every network request: the page cannot send data anywhere. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
+<title>PGx Genotype Explorer v5</title>
+<style>
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f0f3f6;
+  --text: #1b2430;
+  --muted: #5d6b7a;
+  --border: #dbe1e8;
+  --brand: #9d2235;          /* Temple Cherry */
+  --brand-ink: #ffffff;
+  --accent: #9d2235;
+  --accent-ink: #ffffff;
+  --accent-soft: #f7e9ec;
+  --yours: #fbf1f3;
+  --het-bg: #fff1cc; --het-ink: #7a5200;
+  --hom-bg: #fde0dc; --hom-ink: #8f1d12;
+  --carry: #c98a00;
+  --ok-bg: #e3f4e8; --ok-ink: #19613a;
+  --bad-bg: #fde8e5; --bad-ink: #8f1d12;
+  --na: #9aa6b2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --surface: #1a2027; --surface-2: #212932; --text: #e6ebf0; --muted: #9aa8b6;
+    --border: #2e3843; --accent: #f08a9c; --accent-ink: #1c0a0e; --accent-soft: #3a1c23; --yours: #2a1d22; --brand: #86182c;
+    --het-bg: #4a3a12; --het-ink: #ffd98a; --hom-bg: #4d2420; --hom-ink: #ffb4a8; --carry: #f0b43c;
+    --ok-bg: #173826; --ok-ink: #9be0b5; --bad-bg: #44211d; --bad-ink: #ffb4a8; --na: #6b7886;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --surface: #1a2027; --surface-2: #212932; --text: #e6ebf0; --muted: #9aa8b6;
+  --border: #2e3843; --accent: #f08a9c; --accent-ink: #1c0a0e; --accent-soft: #3a1c23; --yours: #2a1d22; --brand: #86182c;
+  --het-bg: #4a3a12; --het-ink: #ffd98a; --hom-bg: #4d2420; --hom-ink: #ffb4a8; --carry: #f0b43c;
+  --ok-bg: #173826; --ok-ink: #9be0b5; --bad-bg: #44211d; --bad-ink: #ffb4a8; --na: #6b7886;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+.brandbar { background: var(--brand); color: var(--brand-ink); border-radius: 14px; padding: 16px 20px 18px; }
+.brand-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.brand-id { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand-logo img { height: 46px; width: 46px; display: block; border-radius: 6px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.75); }
+.inst { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; opacity: .92; }
+header h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; color: var(--brand-ink); }
+header h1 .ver { font-weight: 400; font-size: .7em; opacity: .75; }
+header p { margin: 0; color: var(--brand-ink); opacity: .88; }
+.brandbar .privacy { background: rgba(255,255,255,.16); color: var(--brand-ink); }
+.brandbar .theme-toggle { background: transparent; color: var(--brand-ink); border-color: rgba(255,255,255,.7); }
+.copyright { font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.privacy { display: inline-flex; gap: 8px; align-items: center; margin-top: 10px; font-size: .9rem;
+  background: var(--ok-bg); color: var(--ok-ink); padding: 4px 10px; border-radius: 999px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-top: 18px; }
+.card h2 { font-size: 1.1rem; margin: 0 0 12px; }
+.step { display: inline-block; background: var(--accent); color: var(--accent-ink); border-radius: 999px;
+  width: 1.6em; height: 1.6em; text-align: center; line-height: 1.6em; font-size: .85rem; margin-right: 8px; }
+.drop { border: 2px dashed var(--border); border-radius: 10px; padding: 22px; text-align: center; transition: border-color .15s, background .15s; }
+.drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop p { margin: 8px 0 0; color: var(--muted); font-size: .92rem; }
+button, .btn {
+  font: inherit; font-size: .95rem; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer; min-height: 40px;
+}
+button.secondary { background: transparent; color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible, select:focus-visible, textarea:focus-visible, .tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+details.paste { margin-top: 14px; }
+details.paste summary { cursor: pointer; color: var(--accent); }
+textarea { width: 100%; min-height: 120px; margin: 10px 0; font: 13px/1.4 ui-monospace, Menlo, Consolas, monospace;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+.status { margin-top: 14px; font-size: .95rem; }
+.status.err { color: var(--bad-ink); }
+.status .row { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.pill { background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; font-size: .88rem; }
+.tabs { display: grid; gap: 10px; margin-bottom: 16px; }
+.tabgroup { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.tablabel { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); min-width: 190px; }
+@media (max-width: 640px) { .tablabel { min-width: 100%; } }
+.related { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-top: 12px; font-size: .92rem; }
+.trait-meaning { white-space: normal; text-align: left; min-width: 220px; max-width: 420px; }
+.trait-meaning.hiddenmean span { visibility: hidden; }
+td.trait-name { white-space: normal; text-align: left; min-width: 160px; }
+.tab { font: inherit; font-size: .95rem; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); cursor: pointer; min-height: 38px; }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.gene-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; align-items: baseline; }
+.gene-head h3 { margin: 0; font-size: 1.35rem; }
+.gene-meta { color: var(--muted); font-size: .92rem; margin: 4px 0 0; }
+.strand { font-size: .88rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; margin: 12px 0; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 10px 0; font-size: .92rem; }
+.toolbar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; -webkit-overflow-scrolling: touch; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: .95rem; }
+th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+thead th { background: var(--surface-2); vertical-align: bottom; }
+th.rs { font-weight: 700; }
+.sub { display: block; font-weight: 400; font-size: .78rem; color: var(--muted); line-height: 1.3; }
+.sub.plus { color: var(--accent); }
+th.first, td.first { position: sticky; left: 0; z-index: 1; text-align: left; background: var(--surface); border-right: 1px solid var(--border); white-space: normal; min-width: 170px; }
+thead th.first { background: var(--surface-2); }
+tr.ref td { background: var(--surface); font-weight: 600; }
+tr.yours td, tr.yours td.first { background: var(--yours); font-weight: 700; }
+tr.yours td { font-size: 1.02rem; }
+tbody tr:last-child td { border-bottom: 0; }
+.aname { font-weight: 700; }
+.afn { display: block; font-size: .78rem; color: var(--muted); font-weight: 400; }
+.pick { font-size: .78rem; padding: 2px 8px; min-height: 28px; margin-right: 6px; vertical-align: middle; }
+.cellwrap { display: inline-block; min-width: 2.4em; padding: 2px 6px; border-radius: 6px; }
+.na { color: var(--na); font-weight: 400; font-size: .85rem; }
+.found-as { display: block; font-size: .72rem; color: var(--muted); font-weight: 400; }
+.hl .g-het .cellwrap { background: var(--het-bg); color: var(--het-ink); }
+.hl .g-hom .cellwrap { background: var(--hom-bg); color: var(--hom-ink); }
+.hl td.carry .cellwrap { box-shadow: inset 0 0 0 2px var(--carry); }
+.warn { color: var(--bad-ink); font-weight: 700; }
+tr.untestable td { color: var(--na); }
+.coverage { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; font-size: .92rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip { font-size: .85rem; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); }
+.chip.yes { background: var(--ok-bg); color: var(--ok-ink); border-color: var(--ok-ink); }
+.chip.no { color: var(--na); border-style: dashed; }
+.chip.never { background: var(--bad-bg); color: var(--bad-ink); border-color: transparent; }
+.amb { font-size: .8rem; color: var(--muted); }
+td.extratext { text-align: left; white-space: normal; font-size: .88rem; color: var(--muted); }
+td.extratext div { position: sticky; left: 190px; max-width: min(620px, calc(100vw - 310px)); }
+@media (max-width: 640px) { td.extratext div { left: 150px; max-width: calc(100vw - 230px); } }
+.legend { display: none; flex-wrap: wrap; gap: 6px 18px; font-size: .85rem; color: var(--muted); margin-top: 10px; }
+.hl .legend { display: flex; }
+.legend .sw { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 5px; }
+.notes { font-size: .9rem; color: var(--muted); margin: 12px 0 0; padding-left: 18px; }
+.notes li { margin: 4px 0; }
+.answer { margin-top: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.answer .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.answer select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); min-height: 40px; }
+.taglist { display: grid; gap: 8px; }
+.feedback { margin-top: 12px; padding: 10px 12px; border-radius: 8px; display: none; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.feedback.bad { background: var(--bad-bg); color: var(--bad-ink); }
+.feedback.info { background: var(--accent-soft); color: var(--text); }
+.howto summary { cursor: pointer; color: var(--accent); font-size: .95rem; }
+.howto ol { margin: 8px 0 0; padding-left: 20px; font-size: .92rem; }
+footer { margin-top: 28px; font-size: .82rem; color: var(--muted); }
+.theme-toggle { font-size: .85rem; padding: 4px 10px; min-height: 32px; flex-shrink: 0; }
+@media (max-width: 640px) {
+  header h1 { font-size: 1.3rem; }
+  th, td { padding: 7px 8px; }
+  th.first, td.first { min-width: 130px; }
+}
+@media print {
+  body { background: #fff; }
+  .loader, .tabs, .answer, .theme-toggle, .pick, .toolbar { display: none !important; }
+  .panel { display: block !important; break-inside: avoid; margin-bottom: 18px; }
+  .scroll { overflow: visible; }
+  th.first, td.first { position: static; }
+}
+
+.pwrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.pwrow input { font: inherit; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); width: 160px; min-height: 40px; letter-spacing: .2em; }
+.pwmsg { margin-top: 8px; font-size: .92rem; }
+.pwmsg.err { color: var(--bad-ink); }
+.rep-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: baseline; margin: 6px 0 4px; }
+.rep-meta { color: var(--muted); font-size: .88rem; }
+.rep-group { margin-top: 18px; }
+.rep-group h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 8px; }
+.rep-item { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; break-inside: avoid; display: grid; grid-template-columns: 150px 1fr; gap: 6px 16px; }
+.rep-gene { font-weight: 700; font-size: 1.05rem; }
+.rep-geno { font-size: .9rem; color: var(--muted); margin-top: 2px; }
+.rep-body p { margin: 6px 0 0; font-size: .92rem; }
+.rep-body .drugs { color: var(--muted); }
+.rep-body .caveat { color: var(--muted); font-size: .84rem; font-style: italic; }
+.badge { display: inline-block; font-weight: 600; font-size: .9rem; padding: 3px 10px; border-radius: 999px; }
+.tone-normal { background: var(--ok-bg); color: var(--ok-ink); }
+.tone-mid { background: var(--het-bg); color: var(--het-ink); }
+.tone-high { background: var(--hom-bg); color: var(--hom-ink); }
+.tone-fast { background: var(--accent-soft); color: var(--text); }
+.tone-unk { background: var(--surface-2); color: var(--muted); border: 1px dashed var(--na); }
+.rep-disclaimer { margin-top: 14px; font-size: .85rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 10px; }
+@media (max-width: 640px) { .rep-item { grid-template-columns: 1fr; } }
+@media print {
+  body.print-report .wrap > section:not(#reportCard) { display: none !important; }
+  body.print-report .noprint { display: none !important; }
+  .brandbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brandbar">
+    <div class="brand-top">
+      <div class="brand-id">
+        <span class="brand-logo"><img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTG9nb3MiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEyMCAxMjAiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojYTQxZTM1O30uY2xzLTJ7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48dGl0bGU+VGVtcGxlLUxvZ28tVC1IZWFkZXI8L3RpdGxlPjxyZWN0IGNsYXNzPSJjbHMtMSIgeD0iLTAuMTciIHk9Ii0wLjE3IiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMC4yOCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxOS41NiAxMi45OCAxOS41NiA0NS42IDI2LjU1IDQ1LjYgMjYuNTUgMTkuNDcgOTMuNDQgMTkuNDcgOTMuNDQgNDUuNiAxMDAuMSA0NS42IDEwMC4xIDEyLjk4IDE5LjU2IDEyLjk4Ii8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjM3LjUzIDg2LjAzIDM3LjUzIDkyLjY5IDU2IDkyLjY5IDU2IDI3LjYzIDM0LjM3IDI3LjYzIDM0LjM3IDQ1LjYgNDEuMTkgNDUuNiA0MS4xOSAzNC40NCA0OS4xOCAzNC40NCA0OS4xOCA4Ni4wMyAzNy41MyA4Ni4wMyAzNy41MyA4Ni4wMyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSI2NC4wNyAyNy41NCA2NC4wNyA5Mi42MSA4Mi41NCA5Mi42MSA4Mi41NCA4NS45NSA3MC44OSA4NS45NSA3MC44OSAzNC4zNiA3OC44OCAzNC4zNiA3OC44OCA0NS42IDg1LjcxIDQ1LjYgODUuNzEgMjcuNTQgNzAuODkgMjcuNTQgNjQuMDcgMjcuNTQiLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMzcuNTMgMTA2Ljk2IDgyLjU0IDEwNi45NiA4Mi41NCAxMDAuMzggMzcuNTMgMTAwLjM4IDM3LjUzIDEwNi45NiAzNy41MyAxMDYuOTYiLz48L3N2Zz4=" alt="Temple University logo"></span>
+        <span class="inst">Temple University · School of Pharmacy</span>
+      </div>
+      <button class="secondary theme-toggle" id="themeBtn" type="button" aria-label="Switch light or dark theme">Theme</button>
+    </div>
+    <h1>Pharmacogenomics Genotype Explorer <span class="ver">v5</span></h1>
+    <p>Compare your 23andMe raw data with the reference (*1) alleles of key drug-response genes.</p>
+    <div class="privacy">&#128274; Your data stay on this device. This page cannot send anything over the internet.</div>
+  </header>
+
+  <section class="card loader" aria-labelledby="loadTitle">
+    <h2 id="loadTitle"><span class="step">1</span>Load your raw data</h2>
+    <div class="drop" id="drop">
+      <label class="btn" for="fileInput" role="button" tabindex="0" id="fileLabel">Choose your 23andMe file</label>
+      <input type="file" id="fileInput" accept=".txt,.zip,text/plain,application/zip,application/x-zip-compressed">
+      <p>The .txt file, or the .zip exactly as 23andMe sent it. On a computer you can also drag the file here.</p>
+    </div>
+    <details class="paste">
+      <summary>Or paste the data instead</summary>
+      <p class="gene-meta">Paste the full text of the file, or just two columns copied from a spreadsheet: <b>rsid</b> and <b>genotype</b>.</p>
+      <textarea id="pasteBox" spellcheck="false" placeholder="rs1799853	10	96702047	CT"></textarea>
+      <button type="button" id="pasteBtn">Read pasted data</button>
+    </details>
+    <div class="status" id="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card" aria-labelledby="geneTitle">
+    <h2 id="geneTitle"><span class="step">2</span>Compare your genotype, gene by gene</h2>
+    <details class="howto">
+      <summary>How to read the tables</summary>
+      <ol>
+        <li>The <b>*1 (reference)</b> row shows the most common letter at each position.</li>
+        <li>The <b>Your data</b> row shows your two letters (one from each parent) at the same positions.</li>
+        <li>Each star-allele row shows only the letter(s) that define that allele. A blank cell means it has the same letter as *1.</li>
+        <li>Wherever your letters differ from *1, find the allele row that has that letter. One copy of the different letter means you carry one copy of that allele; two copies means both of your chromosomes carry it.</li>
+        <li>Write your genotype as two alleles (e.g. *1/*2) and use <b>Check your work</b>.</li>
+      </ol>
+    </details>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="panels"></div>
+  </section>
+
+  <section class="card" id="reportCard" aria-labelledby="repTitle">
+    <h2 id="repTitle"><span class="step">3</span>My pharmacogenomic report</h2>
+    <div id="pwBox" class="noprint">
+      <p class="gene-meta">Work through the gene tables first. Your instructor will give you the password for the full report.</p>
+      <div class="pwrow">
+        <label for="pw">Password</label>
+        <input id="pw" type="password" inputmode="numeric" autocomplete="off" aria-describedby="pwMsg">
+        <button type="button" id="unlockBtn">Unlock report</button>
+      </div>
+      <div class="pwmsg" id="pwMsg" aria-live="polite"></div>
+    </div>
+    <div id="report"></div>
+  </section>
+
+  <footer>
+    <div class="copyright">© Oscar Perez-Leal, Temple University School of Pharmacy. For course use.</div>
+    For teaching only. 23andMe raw data are not validated for clinical use, test only a few positions in each gene,
+    cannot detect gene deletions/duplications, and cannot tell which chromosome each variant sits on. Clinical decisions need a clinical-grade test.
+    Allele tables use GRCh37 plus-strand letters, matching 23andMe. Allele definitions and function labels follow CPIC tables (downloaded October 2026) where available.
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ============================================================================
+   GENE DEFINITIONS (edit here)
+   - Every allele letter is on the genomic PLUS strand, the same orientation as
+     23andMe. "c" is the change written on the gene's own strand.
+   - pos = GRCh37 position (used to find markers that 23andMe lists under an
+     internal "i" ID instead of an rsID).
+   - Indels: 23andMe writes I (longer sequence) and D (shorter sequence).
+     A deletion allele has ref I / alt D; an insertion allele has ref D / alt I.
+   ========================================================================== */
+const GENES = [
+  {
+    id: "CYP2C9", chrom: "10", strand: "+",
+    drugs: "Warfarin, phenytoin, NSAIDs (celecoxib, meloxicam, piroxicam), siponimod",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs1799853",  pos: 96702047, ref: "C", alt: "T", c: "c.430C>T",  p: "p.R144C" },
+      { rs: "rs1057910",  pos: 96741053, ref: "A", alt: "C", c: "c.1075A>C", p: "p.I359L" },
+      { rs: "rs56165452", pos: 96741054, ref: "T", alt: "C", c: "c.1076T>C", p: "p.I359T" },
+      { rs: "rs28371686", pos: 96741058, ref: "C", alt: "G", c: "c.1080C>G", p: "p.D360E" },
+      { rs: "rs9332131",  pos: 96709039, ref: "I", alt: "D", c: "c.818delA", p: "frameshift", indel: "deletion of A" },
+      { rs: "rs67807361", pos: 96698494, ref: "C", alt: "A", c: "c.55C>A",   p: "p.L19I" },
+      { rs: "rs7900194",  pos: 96702066, ref: "G", alt: "A", c: "c.449G>A",  p: "p.R150H" },
+      { rs: "rs2256871",  pos: 96708974, ref: "A", alt: "G", c: "c.752A>G",  p: "p.H251R" },
+      { rs: "rs9332130",  pos: 96709037, ref: "A", alt: "G", c: "c.815A>G",  p: "p.E272G" }
+    ],
+    haps: [
+      { name: "*2",  fn: "Decreased function", alleles: { rs1799853: "T" } },
+      { name: "*3",  fn: "No function",        alleles: { rs1057910: "C" } },
+      { name: "*4",  fn: "Uncertain function", alleles: { rs56165452: "C" } },
+      { name: "*5",  fn: "Decreased function", alleles: { rs28371686: "G" } },
+      { name: "*6",  fn: "No function",        alleles: { rs9332131: "D" } },
+      { name: "*7",  fn: "Uncertain function", alleles: { rs67807361: "A" } },
+      { name: "*8",  fn: "Decreased function", alleles: { rs7900194: "A" } },
+      { name: "*9",  fn: "Uncertain function", alleles: { rs2256871: "G" } },
+      { name: "*10", fn: "Uncertain function", alleles: { rs9332130: "G" } }
+    ],
+    notes: [
+      "VKORC1 (next to warfarin dosing with CYP2C9) has its own tab."
+    ]
+  },
+  {
+    id: "CYP2C19", chrom: "10", strand: "+",
+    drugs: "Clopidogrel, voriconazole, proton-pump inhibitors, citalopram/escitalopram, sertraline",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs12248560", pos: 96521657, ref: "C", alt: "T", c: "c.-806C>T",   p: "promoter (more expression)" },
+      { rs: "rs28399504", pos: 96522463, ref: "A", alt: "G", c: "c.1A>G",      p: "p.M1V (start codon)" },
+      { rs: "rs12769205", pos: 96535124, ref: "A", alt: "G", c: "c.332-23A>G", p: "splicing" },
+      { rs: "rs41291556", pos: 96535173, ref: "T", alt: "C", c: "c.358T>C",    p: "p.W120R" },
+      { rs: "rs72552267", pos: 96535210, ref: "G", alt: "A", c: "c.395G>A",    p: "p.R132Q" },
+      { rs: "rs17884712", pos: 96535246, ref: "G", alt: "A", c: "c.431G>A",    p: "p.R144H" },
+      { rs: "rs4986893",  pos: 96540410, ref: "G", alt: "A", c: "c.636G>A",    p: "p.W212X" },
+      { rs: "rs6413438",  pos: 96541615, ref: "C", alt: "T", c: "c.680C>T",    p: "p.P227L" },
+      { rs: "rs4244285",  pos: 96541616, ref: "G", alt: "A", c: "c.681G>A",    p: "splicing defect" },
+      { rs: "rs72558186", pos: 96541756, ref: "T", alt: "A", c: "c.819+2T>A",  p: "splicing defect" },
+      { rs: "rs56337013", pos: 96612495, ref: "C", alt: "T", c: "c.1297C>T",   p: "p.R433W" }
+    ],
+    haps: [
+      { name: "*2",           fn: "No function",        alleles: { rs12769205: "G", rs4244285: "A" } },
+      { name: "*3",           fn: "No function",        alleles: { rs4986893: "A" } },
+      { name: "*4.001 (*4A)", fn: "No function",        alleles: { rs28399504: "G" } },
+      { name: "*4.002 (*4B)", fn: "No function",        alleles: { rs28399504: "G", rs12248560: "T" } },
+      { name: "*5",           fn: "No function",        alleles: { rs56337013: "T" } },
+      { name: "*6",           fn: "No function",        alleles: { rs72552267: "A" } },
+      { name: "*7",           fn: "No function",        alleles: { rs72558186: "A" } },
+      { name: "*8",           fn: "No function",        alleles: { rs41291556: "C" } },
+      { name: "*9",           fn: "Decreased function", alleles: { rs17884712: "A" } },
+      { name: "*10",          fn: "Decreased function", alleles: { rs6413438: "T" } },
+      { name: "*17",          fn: "Increased function", alleles: { rs12248560: "T" } }
+    ],
+    notes: [
+      "rs3758581 (c.991A>G) is not shown. In PharmVar's definitions *1 and almost every other allele carry the G, so it does not help tell them apart.",
+      "If you are heterozygous at both c.-806C>T and c.1A>G, the data fit *1/*4.002 and *4.001/*17. 23andMe cannot tell whether the two variants are on the same chromosome."
+    ]
+  },
+  {
+    id: "CYP2D6", chrom: "22", strand: "-", limited: true,
+    drugs: "Codeine, tramadol, tamoxifen, ondansetron, tricyclic antidepressants, atomoxetine, some SSRIs",
+    refName: "*1", refFn: "Normal function · activity value 1",
+    legacyNote: true,
+    snps: [
+      { rs: "rs3892097",  pos: 42524947, ref: "C", alt: "T", c: "1847G>A",    p: "splicing defect" },
+      { rs: "rs1065852",  pos: 42526694, ref: "G", alt: "A", c: "100C>T",     p: "p.P34S" },
+      { rs: "rs35742686", pos: 42524244, ref: "I", alt: "D", c: "2550delA",   p: "frameshift", indel: "deletion of A" },
+      { rs: "rs5030655",  pos: 42525086, ref: "I", alt: "D", c: "1708delT",   p: "frameshift", indel: "deletion of T" },
+      { rs: "rs5030867",  pos: 42523858, ref: "T", alt: "G", c: "2936A>C",    p: "p.H324P" },
+      { rs: "rs5030865",  pos: 42525035, ref: "C", alt: "A", alts: ["A", "T"], c: "1759G>T / G>A", p: "p.G169X / p.G169R" },
+      { rs: "rs5030656",  pos: 42524176, ref: "I", alt: "D", c: "2616delAAG", p: "p.K281del", indel: "deletion of AAG" },
+      { rs: "rs5030862",  pos: 42526670, ref: "C", alt: "T", c: "124G>A",     p: "p.G42R" },
+      { rs: "rs28371706", pos: 42525772, ref: "G", alt: "A", c: "1022C>T",    p: "p.T107I" },
+      { rs: "rs61736512", pos: 42525134, ref: "C", alt: "T", c: "1660G>A",    p: "p.V136M" },
+      { rs: "rs59421388", pos: 42523610, ref: "C", alt: "T", c: "3184G>A",    p: "p.V338M" },
+      { rs: "rs16947",    pos: 42523943, ref: "G", alt: "A", c: "2851C>T",    p: "p.R296C" },
+      { rs: "rs28371725", pos: 42523805, ref: "C", alt: "T", c: "2989G>A",    p: "splicing defect" },
+      { rs: "rs1135840",  pos: 42522613, ref: "C", alt: "G", c: "4181G>C",    p: "p.S486T" }
+    ],
+    haps: [
+      { name: "*2",  fn: "Normal function · 1",       alleles: { rs16947: "A", rs1135840: "G" } },
+      { name: "*3",  fn: "No function · 0",           alleles: { rs35742686: "D" } },
+      { name: "*4",  fn: "No function · 0",           alleles: { rs3892097: "T", rs1065852: "R", rs16947: "R", rs1135840: "S" } },
+      { name: "*6",  fn: "No function · 0",           alleles: { rs5030655: "D", rs1135840: "S" } },
+      { name: "*7",  fn: "No function · 0",           alleles: { rs5030867: "G" } },
+      { name: "*8",  fn: "No function · 0",           alleles: { rs5030865: "A", rs16947: "A", rs1135840: "G" } },
+      { name: "*9",  fn: "Decreased function · 0.25", alleles: { rs5030656: "D" } },
+      { name: "*10", fn: "Decreased function · 0.25", alleles: { rs1065852: "A", rs1135840: "G" } },
+      { name: "*12", fn: "No function · 0",           alleles: { rs5030862: "T", rs16947: "A", rs1135840: "G" } },
+      { name: "*14", fn: "Decreased function · 0.5",  alleles: { rs5030865: "T", rs16947: "A", rs1135840: "G" } },
+      { name: "*17", fn: "Decreased function · 0.5",  alleles: { rs28371706: "A", rs16947: "A", rs1135840: "G" } },
+      { name: "*29", fn: "Decreased function · 0.5",  alleles: { rs61736512: "T", rs59421388: "T", rs16947: "A", rs1135840: "G" } },
+      { name: "*41", fn: "Decreased function · 0.25", alleles: { rs16947: "A", rs28371725: "T", rs1135840: "G" } }
+    ],
+    extraRows: [
+      { name: "*5", fn: "No function · 0", text: "Whole-gene deletion. 23andMe can't see it: someone with *5 on one chromosome looks homozygous for the other allele (e.g. *4/*5 reads as *4/*4)." },
+      { name: "Duplications (*1x2, *2x2, *4x2…)", fn: "Depends on the copied allele (*1x2, *2x2 = 2)", text: "Extra copies of the gene. 23andMe always reports two letters per position, whatever the number of copies, so ultrarapid metabolizers are missed." },
+      { name: "Hybrids (*13, *36, *68…)", fn: "No function · 0", text: "CYP2D6–CYP2D7 hybrid genes. Not detectable with SNP arrays. *36 looks like *10 at the positions shown here." }
+    ],
+    limitedText: "23andMe can't detect the *5 gene deletion, gene duplications or CYP2D6/CYP2D7 hybrids, so this is never a complete CYP2D6 genotype.",
+    notes: [
+      "Numbers after each allele are CPIC activity values. Add your two values to get the activity score: 0 = poor, 0.25–1 = intermediate, 1.25–2.25 = normal, above 2.25 = ultrarapid metabolizer.",
+      "This is a simplified view of CPIC's CYP2D6 allele definition table (157 positions). It shows the core variants of the clinically common alleles, in the legacy numbering CPIC uses.",
+      "'G or A' means CPIC allows either letter: some sub-alleles of that star allele carry the variant and some don't.",
+      "CYP2D6 sits next to two very similar pseudogenes (CYP2D7 and CYP2D8). Array probes can pick up pseudogene sequence, so 23andMe calls in this gene are less reliable than in the other genes."
+    ]
+  },
+  {
+    id: "CYP3A5", chrom: "7", strand: "-",
+    drugs: "Tacrolimus",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs776746",   pos: 99270539, ref: "T", alt: "C", c: "c.219-237A>G", p: "splicing defect (6986A>G)" },
+      { rs: "rs10264272", pos: 99262835, ref: "C", alt: "T", c: "c.624G>A",     p: "splicing defect" },
+      { rs: "rs41303343", pos: 99250394, ref: "D", alt: "I", c: "c.1035dupT",   p: "frameshift", indel: "insertion of T (A on + strand)" },
+      { rs: "rs55817950", pos: 99273821, ref: "G", alt: "A", c: "c.82C>T",      p: "p.R28C" },
+      { rs: "rs28383479", pos: 99258139, ref: "C", alt: "T", c: "c.1009G>A",    p: "p.A337T" },
+      { rs: "rs28365083", pos: 99250236, ref: "G", alt: "T", c: "27289C>A",     p: "p.T398N" },
+      { rs: "rs56411402", pos: 99262860, ref: "T", alt: "C", c: "14665A>G",     p: "p.Q200R" },
+      { rs: "rs55965422", pos: 99264573, ref: "A", alt: "G", c: "12952T>C",     p: "splicing" }
+    ],
+    haps: [
+      { name: "*2", fn: "Uncertain function", alleles: { rs28365083: "T" } },
+      { name: "*3", fn: "No function",        alleles: { rs776746: "C" } },
+      { name: "*4", fn: "Uncertain function", alleles: { rs56411402: "C" } },
+      { name: "*5", fn: "Uncertain function", alleles: { rs55965422: "G" } },
+      { name: "*6", fn: "No function",        alleles: { rs10264272: "T" } },
+      { name: "*7", fn: "No function",        alleles: { rs41303343: "I" } },
+      { name: "*8", fn: "Uncertain function", alleles: { rs55817950: "A" } },
+      { name: "*9", fn: "Uncertain function", alleles: { rs28383479: "T" } }
+    ],
+    notes: [
+      "*3 is the most common allele in many populations, so *3/*3 is a frequent result (it is still not the reference).",
+      "Two functional alleles = normal metabolizer; one = intermediate; none = poor metabolizer."
+    ]
+  },
+  {
+    id: "TPMT", chrom: "6", strand: "-",
+    drugs: "Thiopurines (azathioprine, mercaptopurine, thioguanine)",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs1800462", pos: 18143955, ref: "C", alt: "G", c: "c.238G>C",   p: "p.A80P" },
+      { rs: "rs1800460", pos: 18139228, ref: "C", alt: "T", c: "c.460G>A",   p: "p.A154T" },
+      { rs: "rs1800584", pos: 18131012, ref: "C", alt: "T", c: "c.626-1G>A", p: "splicing defect" },
+      { rs: "rs1142345", pos: 18130918, ref: "T", alt: "C", c: "c.719A>G",   p: "p.Y240C" }
+    ],
+    haps: [
+      { name: "*2",  fn: "No function", alleles: { rs1800462: "G" } },
+      { name: "*3A", fn: "No function", alleles: { rs1800460: "T", rs1142345: "C" } },
+      { name: "*3B", fn: "No function", alleles: { rs1800460: "T" } },
+      { name: "*3C", fn: "No function", alleles: { rs1142345: "C" } },
+      { name: "*4",  fn: "No function", alleles: { rs1800584: "T" } }
+    ],
+    notes: [
+      "If you are heterozygous at both c.460G>A and c.719A>G, the data fit *1/*3A and *3B/*3C. 23andMe cannot tell whether the two variants are on the same chromosome."
+    ]
+  },
+  {
+    id: "DPYD", chrom: "1", strand: "-",
+    drugs: "Fluoropyrimidines (5-fluorouracil, capecitabine)",
+    refName: "Reference", refFn: "Normal function",
+    snps: [
+      { rs: "rs3918290",   pos: 97915614, ref: "C", alt: "T", c: "c.1905+1G>A",      p: "exon 14 skipping" },
+      { rs: "rs55886062",  pos: 97981343, ref: "A", alt: "C", c: "c.1679T>G",        p: "p.I560S" },
+      { rs: "rs67376798",  pos: 97547947, ref: "T", alt: "A", c: "c.2846A>T",        p: "p.D949V" },
+      { rs: "rs75017182",  pos: 98045449, ref: "G", alt: "C", c: "c.1129-5923C>G",   p: "splicing (HapB3)" },
+      { rs: "rs56038477",  pos: 98039419, ref: "C", alt: "T", c: "c.1236G>A",        p: "p.E412E (HapB3)" },
+      { rs: "rs115232898", pos: 98165030, ref: "T", alt: "C", c: "c.557A>G",         p: "p.Y186C" },
+      { rs: "rs1801266",   pos: 98157332, ref: "G", alt: "A", c: "c.703C>T",         p: "p.R235W" },
+      { rs: "rs1801268",   pos: 97544627, ref: "C", alt: "A", c: "c.2983G>T",        p: "p.V995F" },
+      { rs: "rs72549303",  pos: 97915622, ref: "I", alt: "D", c: "c.1898delC",       p: "frameshift", indel: "deletion of C" },
+      { rs: "rs72549309",  pos: null,     ref: "I", alt: "D", c: "c.295_298delTCAT", p: "frameshift", indel: "deletion of TCAT" },
+      { rs: "rs78060119",  pos: 98058899, ref: "C", alt: "A", c: "c.1156G>T",        p: "p.E386X", altIds: ["i4001518"] }
+    ],
+    haps: [
+      { name: "c.1905+1G>A (*2A)",      fn: "No function",        alleles: { rs3918290: "T" } },
+      { name: "c.1679T>G (*13)",        fn: "No function",        alleles: { rs55886062: "C" } },
+      { name: "c.2846A>T",              fn: "Decreased function", alleles: { rs67376798: "A" } },
+      { name: "c.1129-5923C>G (HapB3)", fn: "Decreased function", alleles: { rs75017182: "C", rs56038477: "T" } },
+      { name: "c.557A>G",               fn: "Decreased function", alleles: { rs115232898: "C" } },
+      { name: "c.703C>T (*8)",          fn: "No function",        alleles: { rs1801266: "A" } },
+      { name: "c.2983G>T (*10)",        fn: "No function",        alleles: { rs1801268: "A" } },
+      { name: "c.1898delC (*3)",        fn: "No function",        alleles: { rs72549303: "D" } },
+      { name: "c.295_298delTCAT (*7)",  fn: "No function",        alleles: { rs72549309: "D" } },
+      { name: "c.1156G>T (*12)",        fn: "No function",        alleles: { rs78060119: "A" } }
+    ],
+    notes: [
+      "CPIC names DPYD variants by their c. change. Older star names are shown in brackets.",
+      "HapB3 is defined by c.1129-5923C>G; c.1236G>A almost always travels with it and is used as a marker."
+    ]
+  },
+  {
+    id: "VKORC1", chrom: "16", strand: "-",
+    drugs: "Warfarin (with CYP2C9)",
+    refName: "-1639G", refFn: "Reference (normal expression)",
+    snps: [
+      { rs: "rs9923231", pos: 31107689, ref: "C", alt: "T", c: "c.-1639G>A", p: "promoter" }
+    ],
+    haps: [
+      { name: "-1639A", fn: "Lower expression (more warfarin-sensitive)", alleles: { rs9923231: "T" } }
+    ],
+    notes: [
+      "The gene is on the minus strand, so -1639G>A appears in 23andMe data as C>T."
+    ]
+  },
+  {
+    id: "SLCO1B1", chrom: "12", strand: "+",
+    drugs: "Statins (especially simvastatin)",
+    refName: "521T", refFn: "Normal function",
+    snps: [
+      { rs: "rs4149056", pos: 21331549, ref: "T", alt: "C", c: "c.521T>C", p: "p.V174A" }
+    ],
+    haps: [
+      { name: "521C", fn: "Decreased function (found in *5, *15, *17 and others)", alleles: { rs4149056: "C" } }
+    ],
+    notes: [
+      "One marker cannot give the full star allele. It does tell you whether you carry the decreased-function c.521C."
+    ]
+  },
+  {
+    id: "HLA-B", chrom: "6", strand: "+", mode: "tag",
+    drugs: "Abacavir (*57:01); carbamazepine, oxcarbazepine, phenytoin (*15:02)",
+    refName: "Non-carrier", refFn: "No tag allele",
+    snps: [
+      { rs: "rs2395029", pos: 31431780, ref: "T", alt: "G", c: "HCP5 tag",  p: "tags *57:01" },
+      { rs: "rs3130690", pos: 31285935, ref: "G", alt: "T", c: "tag SNP",   p: "tags *15:02" },
+      { rs: "rs3909184", pos: 30699384, ref: "G", alt: "C", c: "tag SNP",   p: "tags *15:02" },
+      { rs: "rs2844682", pos: 30946148, ref: "G", alt: "A", c: "tag SNP",   p: "tags *15:02" }
+    ],
+    haps: [
+      { name: "*57:01",           fn: "Abacavir hypersensitivity risk", alleles: { rs2395029: "G" } },
+      { name: "*15:02 (marker A)", fn: "SJS/TEN risk with carbamazepine", alleles: { rs3130690: "T" } },
+      { name: "*15:02 (marker B)", fn: "Needs both tag letters", alleles: { rs3909184: "C", rs2844682: "A" } }
+    ],
+    notes: [
+      "HLA-B cannot be typed directly from 23andMe data. These are tag SNPs that usually travel with the HLA allele. They work best in the populations they were found in (rs2395029 for *57:01 in people of European ancestry; *15:02 tags in East and Southeast Asian populations).",
+      "Clinical decisions need real HLA typing."
+    ]
+  },
+  {
+    id: "CYP2B6", chrom: "19", strand: "+",
+    drugs: "Efavirenz (CPIC); also methadone, bupropion",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs3745274",  pos: 41512841, ref: "G", alt: "T", c: "c.516G>T", p: "p.Q172H, splicing" },
+      { rs: "rs2279343",  pos: 41515263, ref: "A", alt: "G", c: "c.785A>G", p: "p.K262R" },
+      { rs: "rs28399499", pos: 41518221, ref: "T", alt: "C", c: "c.983T>C", p: "p.I328T" }
+    ],
+    haps: [
+      { name: "*4",  fn: "Increased function", alleles: { rs2279343: "G" } },
+      { name: "*6",  fn: "Decreased function", alleles: { rs3745274: "T", rs2279343: "G" } },
+      { name: "*9",  fn: "Decreased function", alleles: { rs3745274: "T" } },
+      { name: "*18", fn: "No function",        alleles: { rs28399499: "C", rs2279343: "R" } }
+    ],
+    notes: [
+      "*6 needs BOTH c.516G>T and c.785A>G. If you are heterozygous at both, the data fit *1/*6 and *4/*9; 23andMe can't tell whether the two variants are on the same chromosome.",
+      "*6 is common worldwide and especially frequent in people of African ancestry."
+    ]
+  },
+  {
+    id: "CYP4F2", chrom: "19", strand: "-",
+    drugs: "Warfarin (with CYP2C9 and VKORC1)",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs2108622", pos: 15990431, ref: "C", alt: "T", c: "c.1297G>A", p: "p.V433M" }
+    ],
+    haps: [
+      { name: "*3", fn: "Reduced activity: carriers may need a slightly higher warfarin dose", alleles: { rs2108622: "T" } }
+    ],
+    related: [
+      { rs: "rs12777823", chrom: "10", pos: 96405502, ref: "G", alt: "A", label: "CYP2C gene cluster", text: "The A allele is linked to a lower warfarin dose requirement in patients of African ancestry (CPIC warfarin guideline)." }
+    ],
+    notes: [
+      "CYP4F2 removes vitamin K from the liver. Less CYP4F2 activity leaves more vitamin K, so a bit more warfarin is needed."
+    ]
+  },
+  {
+    id: "NUDT15", chrom: "13", strand: "+",
+    drugs: "Thiopurines (azathioprine, mercaptopurine, thioguanine), together with TPMT",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs116855232", pos: 48619855, ref: "C", alt: "T", c: "c.415C>T", p: "p.R139C" }
+    ],
+    haps: [
+      { name: "*3", fn: "No function", alleles: { rs116855232: "T" } }
+    ],
+    notes: [
+      "NUDT15*2 has this same variant plus a small insertion the chip can't see, so a T here means *2 or *3. Both are no function.",
+      "Most common in people of East Asian and Hispanic/Latino ancestry. CPIC's thiopurine guideline uses TPMT and NUDT15 together."
+    ]
+  },
+  {
+    id: "UGT1A1", chrom: "2", strand: "+",
+    drugs: "Atazanavir (CPIC); irinotecan; explains Gilbert syndrome (mildly raised bilirubin)",
+    refName: "*1", refFn: "Normal function",
+    snps: [
+      { rs: "rs887829",  pos: 234668570, ref: "C", alt: "T", c: "c.-364C>T", p: "promoter (*80)" },
+      { rs: "rs4148323", pos: 234669144, ref: "G", alt: "A", c: "c.211G>A",  p: "p.G71R" }
+    ],
+    haps: [
+      { name: "*80 (marks *28)", fn: "Decreased function (via *28)", alleles: { rs887829: "T" } },
+      { name: "*6",              fn: "Decreased function",           alleles: { rs4148323: "A" } }
+    ],
+    notes: [
+      "The main decreased-function allele, *28, is an extra TA repeat in the promoter (7 TA copies instead of 6). SNP arrays can't count repeats, so 23andMe can't see it directly.",
+      "rs887829 (*80) is almost always inherited together with *28, and CPIC accepts it as a stand-in. A T here most likely means you carry *28.",
+      "*6 is most common in people of East Asian ancestry."
+    ]
+  },
+  {
+    id: "G6PD", chrom: "X", strand: "-", ploidy: "X",
+    drugs: "Rasburicase, pegloticase, primaquine, tafenoquine, dapsone (CPIC)",
+    refName: "B (reference)", refFn: "Normal (class IV)",
+    snps: [
+      { rs: "rs1050829",  pos: 153763492, ref: "T", alt: "C", c: "c.376A>G",  p: "p.N126D" },
+      { rs: "rs1050828",  pos: 153764217, ref: "C", alt: "T", c: "c.202G>A",  p: "p.V68M" },
+      { rs: "rs5030868",  pos: 153762634, ref: "G", alt: "A", c: "c.563C>T",  p: "p.S188F" },
+      { rs: "rs72554664", pos: 153760472, ref: "C", alt: "T", c: "c.1388G>A", p: "p.R463H" }
+    ],
+    haps: [
+      { name: "A",             fn: "Normal (class IV)",    alleles: { rs1050829: "C" } },
+      { name: "A−",            fn: "Deficient (class III)", alleles: { rs1050829: "C", rs1050828: "T" } },
+      { name: "Asahi",         fn: "Deficient (class III)", alleles: { rs1050828: "T" } },
+      { name: "Mediterranean", fn: "Deficient (class II)",  alleles: { rs5030868: "A" } },
+      { name: "Kaiping",       fn: "Deficient (class II)",  alleles: { rs72554664: "T" } }
+    ],
+    notes: [
+      "G6PD is on the X chromosome. A file from someone with one X chromosome (usually male) shows ONE letter per position: they have a single G6PD allele (hemizygous). Choose \"— (only one X)\" as the second allele.",
+      "Two letters means two X chromosomes. A heterozygous female can have anywhere from normal to deficient enzyme activity because of X-inactivation, which is why CPIC treats her as \"variable\".",
+      "A− (c.202G>A with c.376A>G) is common in people of African ancestry; Mediterranean in Southern Europe, the Middle East and South Asia; Kaiping in East Asia. G6PD has 170+ known variants; most are not on the chip."
+    ]
+  },
+  {
+    id: "NAT2", chrom: "8", strand: "+",
+    drugs: "Isoniazid, hydralazine, procainamide, sulfonamides",
+    refName: "*1", refFn: "Rapid acetylator allele",
+    snps: [
+      { rs: "rs1801279", pos: 18257704, ref: "G", alt: "A", c: "c.191G>A", p: "p.R64Q" },
+      { rs: "rs1801280", pos: 18257854, ref: "T", alt: "C", c: "c.341T>C", p: "p.I114T" },
+      { rs: "rs1799930", pos: 18258103, ref: "G", alt: "A", c: "c.590G>A", p: "p.R197Q" },
+      { rs: "rs1208",    pos: 18258316, ref: "G", alt: "A", c: "c.803G>A", p: "p.R268K" },
+      { rs: "rs1799931", pos: 18258370, ref: "G", alt: "A", c: "c.857G>A", p: "p.G286E" }
+    ],
+    haps: [
+      { name: "*4",  fn: "Rapid acetylator allele", alleles: { rs1208: "A" } },
+      { name: "*5",  fn: "Slow acetylator allele",  alleles: { rs1801280: "C" } },
+      { name: "*16", fn: "Slow acetylator allele",  alleles: { rs1801280: "C", rs1208: "A" } },
+      { name: "*6",  fn: "Slow acetylator allele",  alleles: { rs1799930: "A", rs1208: "A" } },
+      { name: "*7",  fn: "Slow acetylator allele",  alleles: { rs1799931: "A", rs1208: "A" } },
+      { name: "*14", fn: "Slow acetylator allele",  alleles: { rs1801279: "A", rs1208: "A" } }
+    ],
+    notes: [
+      "Phenotype: two rapid alleles = rapid acetylator, one = intermediate, none = slow. Slow acetylators build up isoniazid and have more liver and nerve toxicity.",
+      "Allele names follow CPIC's NAT2 table, which uses the reference genome as *1. In older papers *4 is the reference rapid allele, and the allele CPIC calls *16 (c.341T>C with c.803G>A) is the classic *5.",
+      "This is a simplified table of the most common alleles. Only one of each pair is listed when two alleles give the same letters."
+    ]
+  },
+  {
+    id: "BCHE", chrom: "3", strand: "-",
+    drugs: "Succinylcholine, mivacurium (muscle relaxants used in anesthesia)",
+    refName: "U (usual)", refFn: "Normal function",
+    snps: [
+      { rs: "rs1799807", pos: 165548529, ref: "T", alt: "C", c: "c.209A>G",  p: "p.D70G (atypical)" },
+      { rs: "rs1803274", pos: 165491280, ref: "C", alt: "T", c: "c.1699G>A", p: "p.A567T (K variant)" }
+    ],
+    haps: [
+      { name: "A (atypical)",   fn: "Severely reduced: prolonged paralysis if two copies", alleles: { rs1799807: "C" } },
+      { name: "K (Kalow)",      fn: "Mildly reduced", alleles: { rs1803274: "T" } },
+      { name: "AK",             fn: "Severely reduced", alleles: { rs1799807: "C", rs1803274: "T" } }
+    ],
+    notes: [
+      "Butyrylcholinesterase breaks down succinylcholine in plasma. People with two atypical alleles can stay paralysed for hours after a normal dose instead of minutes.",
+      "The atypical variant usually sits on the same chromosome as the K variant (AK).",
+      "BCHE is a classic pharmacogenetics example but does not have a CPIC allele table yet."
+    ]
+  },
+  {
+    id: "ABCG2", chrom: "4", strand: "-",
+    drugs: "Rosuvastatin (CPIC statin guideline, with SLCO1B1 and CYP2C9); allopurinol response",
+    refName: "421C", refFn: "Normal function",
+    snps: [
+      { rs: "rs2231142", pos: 89052323, ref: "G", alt: "T", c: "c.421C>A", p: "p.Q141K" }
+    ],
+    haps: [
+      { name: "421A", fn: "Decreased function (higher rosuvastatin levels)", alleles: { rs2231142: "T" } }
+    ],
+    notes: [
+      "ABCG2 (BCRP) is an efflux transporter that pumps rosuvastatin out of cells. Q141K lowers the amount of transporter, so blood levels rise.",
+      "The variant is most common in people of East Asian ancestry."
+    ]
+  },
+  {
+    id: "MT-RNR1", chrom: "MT", strand: "+", ploidy: 1,
+    drugs: "Aminoglycoside antibiotics (gentamicin, tobramycin, amikacin)",
+    refName: "Reference", refFn: "Normal risk of hearing loss",
+    snps: [
+      { rs: "rs267606617", pos: 1555, ref: "A", alt: "G", c: "m.1555A>G", p: "12S rRNA" },
+      { rs: "rs28358571",  pos: 1189, ref: "T", alt: "C", c: "m.1189T>C", p: "12S rRNA" },
+      { rs: "rs3888511",   pos: 961,  ref: "T", alt: "G", c: "m.961T>G",  p: "12S rRNA" }
+    ],
+    haps: [
+      { name: "m.1555A>G", fn: "Increased risk of aminoglycoside hearing loss", alleles: { rs267606617: "G" } },
+      { name: "m.1189T>C", fn: "Uncertain risk", alleles: { rs28358571: "C" } },
+      { name: "m.961T>G",  fn: "Uncertain risk", alleles: { rs3888511: "G" } }
+    ],
+    notes: [
+      "MT-RNR1 is in mitochondrial DNA, which you inherit only from your mother. 23andMe shows one letter per position, and you have one mitochondrial haplotype, not two alleles.",
+      "m.1555A>G makes the mitochondrial ribosome look more like a bacterial one, so aminoglycosides can bind it and damage the inner ear, sometimes after a single dose.",
+      "Cells hold many mitochondrial DNA copies. A mix of normal and variant copies (heteroplasmy) can't be seen in 23andMe data. Two other increased-risk variants (m.1095T>C, m.1494C>T) are not in the sample file."
+    ]
+  },
+  {
+    id: "Traits", chrom: "", strand: "+", mode: "trait",
+    drugs: "Not drug response: single SNPs that shift the odds of a trait",
+    refName: "", refFn: "",
+    snps: [
+      { rs: "rs4481887",  chrom: "1",  pos: 248496863, ref: "G", alt: "A", trait: "Smelling asparagus in urine", geneName: "OR2M7 region (olfactory receptors)",
+        meaning: ["Least likely to smell the sulfur compounds in urine after eating asparagus.", "More likely to smell them.", "Most likely to smell them."] },
+      { rs: "rs671",      chrom: "12", pos: 112241766, ref: "G", alt: "A", trait: "Alcohol flush (ALDH2)", geneName: "ALDH2 (aldehyde dehydrogenase 2)",
+        meaning: ["Normal ALDH2: acetaldehyde is cleared quickly; no flush.", "One ALDH2*2 copy: facial flushing, fast heartbeat and nausea after alcohol. ALDH2 also activates nitroglycerin, which may work less well.", "Two copies: very little ALDH2 activity; strong flush even after small amounts."] },
+      { rs: "rs713598",   chrom: "7",  pos: 141673345, ref: "G", alt: "C", trait: "Bitter taste (PTC)", geneName: "TAS2R38 (bitter taste receptor)",
+        meaning: ["Likely able to taste the bitter compound PTC.", "Likely a taster (tasting is dominant).", "Possibly unable to taste PTC and some bitter vegetables."] },
+      { rs: "rs72921001", chrom: "11", pos: 6889648,   ref: "A", alt: "C", trait: "Cilantro tastes like soap", geneName: "OR6A2 region (olfactory receptor)",
+        meaning: ["Least likely to find cilantro soapy.", "Less likely to find cilantro soapy.", "More likely to find cilantro soapy."] },
+      { rs: "rs17822931", chrom: "16", pos: 48258198,  ref: "C", alt: "T", trait: "Earwax type", geneName: "ABCC11 (MRP8 transporter)",
+        meaning: ["Wet earwax.", "Wet earwax (wet is dominant).", "Dry earwax and very little underarm odor. ABCC11 is also a drug transporter."] },
+      { rs: "rs4988235",  chrom: "2",  pos: 136608646, ref: "G", alt: "A", trait: "Digesting milk as an adult", geneName: "MCM6 enhancer of LCT (lactase)",
+        meaning: ["Likely lactose intolerant as an adult (lactase switches off after childhood).", "Likely able to digest milk.", "Able to digest milk (lactase persistence)."] }
+    ],
+    haps: [],
+    notes: [
+      "These SNPs change probabilities; they don't decide the trait. Many people with the 'likely' genotype don't have the trait, and the reverse.",
+      "Asparagus: odor production and odor detection both vary. In a large study published in the BMJ in 2016, roughly 60% of participants said they couldn't smell it.",
+      "Bitter taste really depends on three SNPs in TAS2R38 inherited together (PAV taster vs AVI non-taster haplotypes); rs713598 is the main one.",
+      "Lactase persistence: rs4988235 is the main European variant; other variants do the same job in African and Middle Eastern populations."
+    ]
+  }
+];
+
+const GROUPS = [
+  { name: "Drug-metabolizing enzymes", ids: ["CYP2C9", "CYP2C19", "CYP2D6", "CYP2B6", "CYP3A5", "CYP4F2", "TPMT", "NUDT15", "DPYD", "UGT1A1", "G6PD", "NAT2", "BCHE"] },
+  { name: "Transporters & drug targets", ids: ["SLCO1B1", "ABCG2", "VKORC1"] },
+  { name: "Immune & mitochondrial", ids: ["HLA-B", "MT-RNR1"] },
+  { name: "Just for fun", ids: ["Traits"] }
+];
+(function orderGenes() {
+  const order = GROUPS.flatMap(gr => gr.ids);
+  GENES.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+})();
+
+/* ============================================================================
+   STATE
+   ========================================================================== */
+let OBS = null;          // rsid -> { gt: "CT", alleles: ["C","T"], foundAs, status }
+let FILE_INFO = null;
+let highlight = false;
+let activeGene = GENES[0].id;
+const answers = {};      // geneId -> [a1, a2] or tag answers
+
+const idMap = new Map();
+const posMap = new Map();
+for (const g of GENES) {
+  for (const s of g.snps.concat(g.related || [])) {
+    s.gene = g.id;
+    idMap.set(s.rs.toLowerCase(), s);
+    (s.altIds || []).forEach(a => idMap.set(a.toLowerCase(), s));
+    if (s.pos) posMap.set((s.chrom || g.chrom) + ":" + s.pos, s);
+  }
+}
+const TOTAL_MARKERS = GENES.reduce((n, g) => n + g.snps.length + (g.related || []).length, 0);
+
+/* ============================================================================
+   PARSING
+   ========================================================================== */
+function parseGenome(text) {
+  const obs = {};
+  let lines = 0, header = "";
+  let start = 0;
+  const len = text.length;
+  while (start < len) {
+    let end = text.indexOf("\n", start);
+    if (end === -1) end = len;
+    let line = text.slice(start, end);
+    start = end + 1;
+    if (line.charCodeAt(line.length - 1) === 13) line = line.slice(0, -1);
+    if (!line) continue;
+    if (line[0] === "#") { if (header.length < 4000) header += line + "\n"; continue; }
+    let f = line.split("\t");
+    if (f.length < 2) f = line.trim().split(/[\s,]+/);
+    if (f.length < 2) continue;
+    const id = f[0].trim().replace(/^"|"$/g, "");
+    if (!id || /^rsid$/i.test(id)) continue;
+    lines++;
+    const gt = f[f.length - 1].trim().replace(/^"|"$/g, "").toUpperCase();
+    let snp = idMap.get(id.toLowerCase());
+    let viaPos = false;
+    if (!snp && f.length >= 4) {
+      const p = posMap.get(f[1].trim() + ":" + f[2].trim());
+      if (p && !/build 38|GRCh38/i.test(header)) { snp = p; viaPos = true; }
+    }
+    if (!snp) continue;
+    const existing = obs[snp.rs];
+    if (existing && (viaPos || existing.foundAs === snp.rs)) continue;   // rsID match wins
+    obs[snp.rs] = makeObs(snp, gt, id);
+  }
+  return { obs, lines, header };
+}
+
+function makeObs(snp, gt, foundAs) {
+  const o = { gt, foundAs, status: "ok", alleles: [] };
+  if (!gt || gt === "--" || gt === "00" || /^-+$/.test(gt)) { o.status = "nocall"; return o; }
+  const letters = gt.replace(/[\/|\s]/g, "").split("");
+  if (letters.length !== 1 && letters.length !== 2) { o.status = "nocall"; return o; }
+  o.alleles = letters;
+  o.hemi = letters.length === 1;
+  const alts = snp.alts || [snp.alt];
+  o.unexpected = letters.some(a => a !== snp.ref && !alts.includes(a));
+  o.altCount = letters.filter(a => a !== snp.ref).length;
+  return o;
+}
+
+/* ============================================================================
+   ZIP (23andMe sends a .zip). Uses the browser's built-in decompressor.
+   ========================================================================== */
+async function unzipText(buf) {
+  const dv = new DataView(buf);
+  let eocd = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 65557); i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error("This zip file looks damaged.");
+  const count = dv.getUint16(eocd + 10, true);
+  let off = dv.getUint32(eocd + 16, true);
+  const entries = [];
+  const dec = new TextDecoder();
+  for (let k = 0; k < count; k++) {
+    if (dv.getUint32(off, true) !== 0x02014b50) break;
+    const method = dv.getUint16(off + 10, true);
+    const csize = dv.getUint32(off + 20, true);
+    const nlen = dv.getUint16(off + 28, true), elen = dv.getUint16(off + 30, true), clen = dv.getUint16(off + 32, true);
+    const lho = dv.getUint32(off + 42, true);
+    const name = dec.decode(new Uint8Array(buf, off + 46, nlen));
+    entries.push({ name, method, csize, lho });
+    off += 46 + nlen + elen + clen;
+  }
+  const cands = entries.filter(e => /\.txt$/i.test(e.name) && !/__MACOSX|\/\./.test(e.name));
+  if (!cands.length) throw new Error("No .txt file found inside the zip.");
+  const e = cands.sort((a, b) => b.csize - a.csize)[0];
+  const nlen = dv.getUint16(e.lho + 26, true), elen = dv.getUint16(e.lho + 28, true);
+  const data = new Uint8Array(buf, e.lho + 30 + nlen + elen, e.csize);
+  if (e.method === 0) return dec.decode(data);
+  if (e.method !== 8) throw new Error("Unsupported zip compression. Please unzip the file first.");
+  if (typeof DecompressionStream === "undefined") throw new Error("This browser can't open zip files. Please unzip the file first and choose the .txt inside.");
+  const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+  return await new Response(stream).text();
+}
+
+async function readFile(file) {
+  setStatus("Reading " + file.name + "…");
+  try {
+    const buf = await file.arrayBuffer();
+    const head = new Uint8Array(buf, 0, Math.min(4, buf.byteLength));
+    let text;
+    if (head[0] === 0x50 && head[1] === 0x4b) text = await unzipText(buf);
+    else text = new TextDecoder().decode(buf);
+    ingest(text, file.name);
+  } catch (err) {
+    setStatus(err.message || String(err), true);
+  }
+}
+
+function ingest(text, label) {
+  const t0 = performance.now();
+  const res = parseGenome(text);
+  if (res.lines === 0) { setStatus("No genotype lines found. Check that this is a 23andMe raw data file.", true); return; }
+  OBS = res.obs;
+  const found = Object.values(OBS).filter(o => o.status !== "nocall").length;
+  const build = /build 37|GRCh37/i.test(res.header) ? "Build 37 (GRCh37)" : (res.header ? "Build not stated" : "Pasted data");
+  const dateMatch = res.header.match(/generated by 23andMe at:\s*(.+)/i);
+  FILE_INFO = { label, lines: res.lines, found, build, date: dateMatch ? dateMatch[1].trim() : "", ms: Math.round(performance.now() - t0) };
+  renderStatus();
+  renderAll();
+}
+
+/* ============================================================================
+   CALLING (used only for "Check your work")
+   ========================================================================== */
+const IUPAC = { R: "AG", Y: "CT", S: "CG", W: "AT", K: "GT", M: "AC" };
+function hapAllele(h, snp) { return (h.alleles && h.alleles[snp.rs]) || snp.ref; }
+function hapOptions(h, snp) { const a = hapAllele(h, snp); return IUPAC[a] ? IUPAC[a].split("") : [a]; }
+
+function testedSnps(g) {
+  if (!OBS) return [];
+  return g.snps.filter(s => { const o = OBS[s.rs]; return o && o.status === "ok" && !o.unexpected; });
+}
+
+function allHaps(g) { return [{ name: g.refName, fn: g.refFn, alleles: {}, isRef: true }].concat(g.haps); }
+
+function hapTestable(h, tested) {
+  if (h.isRef) return true;
+  return Object.keys(h.alleles).some(rs => !IUPAC[h.alleles[rs]] && tested.some(s => s.rs === rs));
+}
+
+function callDiplotypes(g) {
+  let tested = testedSnps(g);
+  const singles = tested.filter(s => OBS[s.rs].alleles.length === 1);
+  const hemi = tested.length > 0 && singles.length === tested.length && g.ploidy;
+  if (!hemi && singles.length) tested = tested.filter(s => OBS[s.rs].alleles.length === 2);
+  const haps = allHaps(g).filter(h => hapTestable(h, tested));
+  if (hemi) {
+    const m = haps.filter(h => tested.every(s => hapOptions(h, s).includes(OBS[s.rs].alleles[0]))).map(h => [h.name]);
+    return { matches: m, tested, hemi: true };
+  }
+  const out = [];
+  for (let i = 0; i < haps.length; i++) for (let j = i; j < haps.length; j++) {
+    const ok = tested.every(s => {
+      const obs = OBS[s.rs].alleles.slice().sort().join("");
+      return hapOptions(haps[i], s).some(x => hapOptions(haps[j], s).some(y => [x, y].sort().join("") === obs));
+    });
+    if (ok) out.push([haps[i].name, haps[j].name]);
+  }
+  return { matches: out, tested };
+}
+
+function pairKey(g, a, b) {
+  if (b === undefined || b === "-") return a;
+  const order = allHaps(g).map(h => h.name);
+  return [a, b].sort((x, y) => order.indexOf(x) - order.indexOf(y)).join(" / ");
+}
+
+/* ============================================================================
+   RENDERING
+   ========================================================================== */
+const $ = sel => document.querySelector(sel);
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function setStatus(msg, isErr) {
+  const el = $("#status");
+  el.className = "status" + (isErr ? " err" : "");
+  el.textContent = msg;
+}
+
+function renderStatus() {
+  const i = FILE_INFO;
+  const el = $("#status");
+  el.className = "status";
+  el.innerHTML = `<div class="row">
+    <span>&#10003; <b>${esc(i.label)}</b></span>
+    <span class="pill">${i.lines.toLocaleString()} markers read</span>
+    <span class="pill">${esc(i.build)}</span>
+    <span class="pill">${i.found} of ${TOTAL_MARKERS} markers found</span>
+    ${i.date ? `<span class="pill">File date: ${esc(i.date)}</span>` : ""}
+    <button type="button" class="secondary" id="clearBtn">Clear my data</button>
+  </div>`;
+  $("#clearBtn").addEventListener("click", () => {
+    OBS = null; FILE_INFO = null;
+    $("#fileInput").value = ""; $("#pasteBox").value = "";
+    for (const k in answers) delete answers[k];
+    setStatus("Data cleared from this page.");
+    renderAll();
+  });
+}
+
+function genoCell(s) {
+  if (!OBS) return `<td><span class="na">—</span></td>`;
+  const o = OBS[s.rs];
+  if (!o) return `<td title="This marker is not in your file (not on your 23andMe chip version)."><span class="na">not tested</span></td>`;
+  if (o.status === "nocall") return `<td title="On the chip, but 23andMe could not read it (--)."><span class="na">no call (--)</span></td>`;
+  const txt = o.alleles.join("/");
+  const viaId = o.foundAs && o.foundAs.toLowerCase() !== s.rs.toLowerCase() ? `<span class="found-as">listed as ${esc(o.foundAs)}</span>` : "";
+  if (o.unexpected) return `<td title="Unexpected letter: expected only ${s.ref} or ${(s.alts || [s.alt]).join("/")}. Ask your instructor."><span class="cellwrap warn">${esc(txt)} !</span>${viaId}</td>`;
+  const cls = o.altCount === o.alleles.length && o.altCount > 0 ? "g-hom" : o.altCount ? "g-het" : "g-ref";
+  return `<td class="${cls}"><span class="cellwrap">${esc(txt)}</span>${viaId}</td>`;
+}
+
+function renderTabs() {
+  $("#tabs").innerHTML = GROUPS.map(gr => `<div class="tabgroup"><span class="tablabel">${esc(gr.name)}</span>` +
+    gr.ids.map(id => `<button type="button" class="tab" role="tab" id="tab-${id}" aria-controls="panel-${id}" aria-selected="${id === activeGene}">${id}</button>`).join("") +
+    `</div>`).join("");
+  $("#tabs").querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+    activeGene = b.id.slice(4);
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === b));
+    document.querySelectorAll(".panel").forEach(pn => { pn.hidden = pn.id !== "panel-" + activeGene; });
+  }));
+}
+
+function renderGene(g) {
+  if (g.mode === "trait") return renderTraits(g);
+  const tested = testedSnps(g);
+  let strandTxt = g.strand === "-"
+    ? `<b>${g.id} is on the minus (−) strand.</b> 23andMe reports the plus strand, so each letter is the complement of the c. change (e.g. A↔T, G↔C). The tables already use plus-strand letters, so compare directly.`
+    : `<b>${g.id} is on the plus (+) strand.</b> The c. change and 23andMe letters read the same way.`;
+  if (g.ploidy === "X") strandTxt += ` <br><b>X chromosome:</b> one letter per position = one X chromosome (one allele); two letters = two X chromosomes.`;
+  if (g.ploidy === 1) strandTxt = `<b>Mitochondrial DNA.</b> There is no minus/plus gene-strand issue here, and each person has one letter per position (one haplotype, inherited from the mother).`;
+  const hasIndel = g.snps.some(s => s.indel);
+
+  let head = `<tr><th class="first">rsID</th>` + g.snps.map(s =>
+    `<th class="rs">${s.rs}<span class="sub">${esc(s.c)}</span><span class="sub">${esc(s.p)}</span><span class="sub plus">+ strand ${s.ref}&gt;${(s.alts || [s.alt]).join("/")}</span></th>`
+  ).join("") + `</tr>`;
+
+  const refRow = `<tr class="ref"><td class="first"><span class="aname">${esc(g.refName)}</span> <span class="afn">reference · ${esc(g.refFn)}</span></td>` +
+    g.snps.map(s => `<td><span class="cellwrap">${s.ref}</span></td>`).join("") + `</tr>`;
+
+  const yourRow = `<tr class="yours"><td class="first">Your data</td>` + g.snps.map(genoCell).join("") + `</tr>`;
+
+  const rows = g.haps.map((h, idx) => {
+    const untestable = OBS && !hapTestable(h, tested);
+    const pick = g.mode === "tag" ? "" : `<button type="button" class="secondary pick" data-gene="${g.id}" data-hap="${esc(h.name)}" aria-label="Use ${esc(h.name)} in my answer">Select</button>`;
+    const cells = g.snps.map(s => {
+      const a = h.alleles[s.rs];
+      if (!a) return `<td></td>`;
+      if (IUPAC[a]) return `<td title="CPIC code ${a}: either letter (some sub-alleles carry the variant, some don't)."><span class="cellwrap amb">${IUPAC[a][0]} or ${IUPAC[a][1]}</span></td>`;
+      const o = OBS && OBS[s.rs];
+      const carry = o && o.status === "ok" && o.alleles.includes(a);
+      return `<td class="${carry ? "carry" : ""}"><span class="cellwrap">${a}</span></td>`;
+    }).join("");
+    return `<tr class="${untestable ? "untestable" : ""}"${untestable ? ` title="None of the positions that define ${esc(h.name)} are in your file, so it can't be detected."` : ""}>
+      <td class="first">${pick}<span class="aname">${esc(h.name)}</span><span class="afn">${esc(h.fn)}${untestable ? " · not testable with your file" : ""}</span></td>${cells}</tr>`;
+  }).join("") + (g.extraRows || []).map(r =>
+    `<tr class="untestable extra"><td class="first"><span class="aname">${esc(r.name)}</span><span class="afn">${esc(r.fn)}</span></td><td colspan="${g.snps.length}" class="extratext"><div>${esc(r.text)}</div></td></tr>`
+  ).join("");
+
+  let coverage = "";
+  if (g.limited) {
+    const chips = g.haps.map(h => {
+      const st = !OBS ? "" : hapTestable(h, tested) ? "yes" : "no";
+      return `<span class="chip ${st}" title="${st === "yes" ? "Testable with your file" : st === "no" ? "Not in your file" : ""}">${esc(h.name)}</span>`;
+    }).join("") + (g.extraRows || []).map(r => `<span class="chip never" title="Never detectable with 23andMe">${esc(r.name.split(" (")[0])}</span>`).join("");
+    coverage = `<div class="coverage"><b>${OBS ? "What your file can test" : "Alleles in this table"}</b>
+      <div class="chips">${chips}</div>
+      ${OBS ? `<div class="legend" style="display:flex"><span><span class="sw" style="background:var(--ok-bg);border:1px solid var(--ok-ink)"></span>Testable with your file</span><span><span class="sw" style="background:var(--surface-2);border:1px dashed var(--na)"></span>Marker not in your file</span><span><span class="sw" style="background:var(--bad-bg)"></span>Never detectable with 23andMe</span></div>` : ""}
+      <p class="gene-meta" style="margin-top:8px">${esc(g.limitedText)}</p></div>`;
+  }
+
+  const missing = OBS ? g.snps.filter(s => !OBS[s.rs] || OBS[s.rs].status !== "ok") : [];
+  const notes = g.notes.slice();
+  if (missing.length) notes.unshift(`Not readable in your file: ${missing.map(s => s.rs).join(", ")}. Alleles that depend only on these can't be ruled out, so "${g.refName}" here means "none of the tested variants".`);
+  if (hasIndel) notes.push(`I/D letters: 23andMe writes insertions and deletions as I (the longer sequence) and D (the shorter one). For a deletion allele the reference is I and the variant is D; for an insertion it is the other way round.`);
+
+  return `<div class="panel" id="panel-${g.id}" role="tabpanel" aria-labelledby="tab-${g.id}" ${g.id === activeGene ? "" : "hidden"}>
+    <div class="gene-head"><div><h3>${g.id}</h3><p class="gene-meta">Drugs: ${esc(g.drugs)} · Chromosome ${g.chrom}</p></div></div>
+    <div class="strand">${strandTxt}</div>
+    ${coverage}
+    <div class="toolbar">
+      <label><input type="checkbox" class="hlToggle" ${highlight ? "checked" : ""}> Highlight where my data differ from ${esc(g.refName)}</label>
+    </div>
+    <div class="scroll"><table>
+      <thead>${head}</thead>
+      <tbody>${refRow}${yourRow}${rows}</tbody>
+    </table></div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--het-bg)"></span>One copy of the variant letter</span>
+      <span><span class="sw" style="background:var(--hom-bg)"></span>All copies (two, or the only one on X / mitochondria)</span>
+      <span><span class="sw" style="box-shadow:inset 0 0 0 2px var(--carry)"></span>You carry this allele's letter</span>
+    </div>
+    ${(g.related || []).map(r => `<div class="related"><b>Related marker:</b> ${r.rs} (${esc(r.label)}), + strand ${r.ref}&gt;${r.alt}. Your data: <b>${relatedGeno(r)}</b>. ${esc(r.text)}</div>`).join("")}
+    <ul class="notes">${notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+    ${g.mode === "tag" ? renderTagAnswer(g) : renderAnswer(g)}
+  </div>`;
+}
+
+function relatedGeno(r) {
+  if (!OBS) return "—";
+  const o = OBS[r.rs];
+  if (!o) return "not tested";
+  if (o.status === "nocall") return "no call";
+  return esc(o.alleles.join("/"));
+}
+
+let traitsRevealed = false;
+function renderTraits(g) {
+  const rows = g.snps.map(s => {
+    const o = OBS && OBS[s.rs];
+    let mean = "", cls = "";
+    if (o && o.status === "ok" && !o.unexpected && o.alleles.length === 2) mean = s.meaning[o.altCount];
+    else if (o && o.unexpected) mean = "Unexpected letter; ask your instructor.";
+    return `<tr><td class="first trait-name"><span class="aname">${esc(s.trait)}</span><span class="afn">${esc(s.geneName)}</span></td>
+      <td><b>${s.rs}</b><span class="sub plus">+ strand ${s.ref}&gt;${s.alt}</span></td>
+      ${genoCell(s)}
+      <td><span class="cellwrap"><b>${s.alt}</b></span></td>
+      <td class="trait-meaning ${traitsRevealed ? "" : "hiddenmean"}"><span>${esc(mean || (OBS ? "Not in your file." : ""))}</span></td></tr>`;
+  }).join("");
+  return `<div class="panel" id="panel-${g.id}" role="tabpanel" aria-labelledby="tab-${g.id}" ${g.id === activeGene ? "" : "hidden"}>
+    <div class="gene-head"><div><h3>Traits</h3><p class="gene-meta">Not drug response: single SNPs that shift the odds of a trait.</p></div></div>
+    <div class="strand">Count how many copies of the <b>letter to look for</b> you have (0, 1 or 2), predict the trait, then reveal the meanings to check.</div>
+    <div class="toolbar">
+      <label><input type="checkbox" class="hlToggle" ${highlight ? "checked" : ""}> Highlight my copies of the letter</label>
+      <button type="button" class="secondary" id="traitReveal">${traitsRevealed ? "Hide meanings" : "Reveal meanings"}</button>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th class="first">Trait</th><th>Marker</th><th>Your data</th><th>Letter to look for</th><th style="text-align:left">What it means</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <ul class="notes">${g.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function renderAnswer(g) {
+  const names = allHaps(g).map(h => h.name);
+  const a = answers[g.id] || ["", ""];
+  const opt = (v, extra) => `<option value="">?</option>` + (extra || "") + names.map(n => `<option ${n === v ? "selected" : ""}>${esc(n)}</option>`).join("");
+  const second = g.ploidy === 1 ? "" : `<span>/</span>
+      <select aria-label="Second allele" data-slot="1" data-gene="${g.id}">${opt(a[1], g.ploidy === "X" ? `<option value="-" ${a[1] === "-" ? "selected" : ""}>— (only one X)</option>` : "")}</select>`;
+  return `<div class="answer">
+    <div class="row">
+      <b>Your answer:</b>
+      <select aria-label="First allele" data-slot="0" data-gene="${g.id}">${opt(a[0])}</select>
+      ${second}
+      <button type="button" class="checkBtn" data-gene="${g.id}">Check your work</button>
+      <button type="button" class="secondary revealBtn" data-gene="${g.id}" hidden>Show answer</button>
+    </div>
+    <div class="feedback" id="fb-${g.id}" aria-live="polite"></div>
+  </div>`;
+}
+
+function renderTagAnswer(g) {
+  const a = answers[g.id] || {};
+  return `<div class="answer">
+    <b>Your answer:</b>
+    <div class="taglist" style="margin-top:8px">
+      ${g.haps.map((h, i) => `<label>${esc(h.name)}:
+        <select data-tag="${i}" data-gene="${g.id}">
+          <option value="">?</option>
+          <option value="yes" ${a[i] === "yes" ? "selected" : ""}>Tag present (carrier)</option>
+          <option value="no" ${a[i] === "no" ? "selected" : ""}>Tag absent</option>
+        </select></label>`).join("")}
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button type="button" class="checkBtn" data-gene="${g.id}">Check your work</button>
+      <button type="button" class="secondary revealBtn" data-gene="${g.id}" hidden>Show answer</button>
+    </div>
+    <div class="feedback" id="fb-${g.id}" aria-live="polite"></div>
+  </div>`;
+}
+
+function feedback(g, html, kind) {
+  const el = $("#fb-" + g.id);
+  el.className = "feedback show " + kind;
+  el.innerHTML = html;
+}
+
+function checkDiplotype(g, reveal) {
+  if (!OBS) { feedback(g, "Load your data first (step 1).", "info"); return; }
+  const { matches, tested, hemi } = callDiplotypes(g);
+  if (!tested.length) { feedback(g, "None of this gene's positions could be read in your file, so it can't be checked.", "info"); return; }
+  const keys = matches.map(m => pairKey(g, m[0], m[1]));
+  const oneX = hemi && g.ploidy === "X" ? " (one X chromosome, so a single allele)" : "";
+  let caveat = tested.length < g.snps.length ? ` <br><small>Only ${tested.length} of ${g.snps.length} positions were readable, so rarer alleles can't be ruled out.</small>` : "";
+  if (g.limited) {
+    const untest = g.haps.filter(h => !hapTestable(h, tested)).map(h => h.name);
+    caveat = `<br><br><b>Important:</b> ${untest.length ? `your file can't test ${untest.join(", ")}, so "${esc(g.refName)}" may really be one of these. ` : ""}${esc(g.limitedText)}`;
+  }
+  if (!keys.length) {
+    feedback(g, `Your letters don't fit any pair of alleles in this table exactly. That can happen with rare variants or genotyping errors. Discuss it with your instructor.${caveat}`, "info");
+    return;
+  }
+  const answerText = keys.length === 1
+    ? `<b>${esc(keys[0])}</b>`
+    : keys.map(k => `<b>${esc(k)}</b>`).join(" or ") + ` (23andMe can't tell which chromosome each variant is on, so these can't be told apart)`;
+  if (reveal) { feedback(g, `Your data fit ${answerText}${oneX}.${caveat}`, "info"); return; }
+  const a = answers[g.id] || ["", ""];
+  if (!a[0] || (g.ploidy !== 1 && !a[1])) { feedback(g, g.ploidy === 1 ? "Choose an answer first." : "Choose both alleles first.", "info"); return; }
+  const mine = g.ploidy === 1 ? a[0] : pairKey(g, a[0], a[1]);
+  const btn = document.querySelector(`.revealBtn[data-gene="${g.id}"]`);
+  if (keys.includes(mine)) {
+    const others = keys.filter(k => k !== mine);
+    feedback(g, (g.limited ? `Correct for the positions your file covers: <b>${esc(mine)}</b>.` : `Correct! Your data fit <b>${esc(mine)}</b>${oneX}.`) +
+      (others.length ? ` ${others.map(k => `<b>${esc(k)}</b>`).join(" or ")} also fit, because 23andMe can't tell which chromosome each variant is on.` : "") + caveat, "ok");
+  } else {
+    let hint = `Not quite. Look again at each column where your letters differ from the ${esc(g.refName)} letter, and find the allele row that has that letter.`;
+    if (hemi && g.ploidy === "X" && a[1] !== "-") hint += ` Also: your file shows one letter per position, so you have one X chromosome. Choose "— (only one X)" as the second allele.`;
+    if (!hemi && g.ploidy === "X" && a[1] === "-") hint += ` Your file shows two letters per position, so you have two X chromosomes and two alleles.`;
+    feedback(g, hint, "bad");
+    if (btn) btn.hidden = false;
+  }
+}
+
+function tagTruth(g) {
+  const tested = testedSnps(g);
+  return g.haps.map(h => {
+    const rsList = Object.keys(h.alleles);
+    if (!rsList.every(rs => tested.some(s => s.rs === rs))) return null;
+    return rsList.every(rs => OBS[rs].alleles.includes(h.alleles[rs])) ? "yes" : "no";
+  });
+}
+
+function checkTags(g, reveal) {
+  if (!OBS) { feedback(g, "Load your data first (step 1).", "info"); return; }
+  const truth = tagTruth(g);
+  const a = answers[g.id] || {};
+  const lines = g.haps.map((h, i) => {
+    if (truth[i] === null) return `${esc(h.name)}: can't be checked (marker not in your file).`;
+    const t = truth[i] === "yes" ? "tag present" : "tag absent";
+    if (reveal) return `${esc(h.name)}: <b>${t}</b>`;
+    if (!a[i]) return `${esc(h.name)}: no answer yet.`;
+    return `${esc(h.name)}: ${a[i] === truth[i] ? "&#10003; correct" : "&#10007; not quite"}`;
+  });
+  const allRight = !reveal && truth.every((t, i) => t === null || a[i] === t);
+  feedback(g, lines.join("<br>"), reveal ? "info" : allRight ? "ok" : "bad");
+  if (!reveal && !allRight) { const b = document.querySelector(`.revealBtn[data-gene="${g.id}"]`); if (b) b.hidden = false; }
+}
+
+
+/* ============================================================================
+   REPORT (password protected)
+   Phenotype rules follow CPIC terms. Edit drug text in REPORT_RULES.
+   The password is stored only as a hash. This is a speed bump for students,
+   not real security: anyone who reads the code can bypass it.
+   ========================================================================== */
+const PW_HASH = "cf0d4a73";
+function pwHash(t) { let x = 2166136261 >>> 0; const s = "pgx-tusp|" + t; for (let i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x.toString(16); }
+let reportUnlocked = false;
+
+const NM = "Normal metabolizer (formerly “extensive”)";
+const R = (label, tone, effect) => ({ label, tone, effect });
+
+// Helper: classify a diplotype by the function category of each allele.
+function cats(pair, map, dflt) { return pair.map(n => (n in map ? map[n] : dflt)); }
+function countOf(arr, v) { return arr.filter(x => x === v).length; }
+
+const REPORT_RULES = {
+  CYP2C9: {
+    drugs: "Warfarin, phenytoin, NSAIDs (celecoxib, flurbiprofen, ibuprofen, meloxicam, piroxicam), siponimod",
+    rule(pair) {
+      const AV = { "*1": 1, "*2": 0.5, "*3": 0, "*5": 0.5, "*6": 0, "*8": 0.5 };
+      if (pair.some(n => !(n in AV))) return R("Indeterminate (allele of uncertain function)", "unk", "One of your alleles has uncertain function, so CPIC does not assign a phenotype.");
+      const as = AV[pair[0]] + AV[pair[1]];
+      if (as >= 2) return R(NM + " · activity score 2", "normal", "Standard dosing of CYP2C9 drugs.");
+      if (as >= 1) return R("Intermediate metabolizer · activity score " + as, "mid", "Slower clearance and higher drug levels. Lower starting doses are often recommended for some NSAIDs and phenytoin; warfarin dosing algorithms include CYP2C9.");
+      return R("Poor metabolizer · activity score " + as, "high", "Much slower clearance and markedly higher drug levels. Lower doses or alternatives are recommended (for example, siponimod is contraindicated in *3/*3 per its FDA label, and NSAIDs metabolized by CYP2C9 need large dose reductions or alternatives).");
+    }
+  },
+  CYP2C19: {
+    drugs: "Clopidogrel, proton-pump inhibitors (omeprazole, lansoprazole, pantoprazole), voriconazole, citalopram/escitalopram, sertraline, amitriptyline",
+    rule(pair) {
+      const c = cats(pair, { "*1": "N", "*17": "I", "*9": "D", "*10": "D" }, "X");
+      const n = k => countOf(c, k);
+      if (n("I") === 2) return R("Ultrarapid metabolizer", "fast", "PPIs, voriconazole and citalopram/escitalopram may reach lower levels: higher doses or alternatives may be needed. Clopidogrel works normally.");
+      if (n("I") === 1 && n("N") === 1) return R("Rapid metabolizer", "fast", "PPIs and voriconazole may reach somewhat lower levels. Clopidogrel works normally.");
+      if (n("N") === 2) return R(NM, "normal", "Standard dosing.");
+      if (n("X") === 2) return R("Poor metabolizer", "high", "Clopidogrel is barely activated: an alternative antiplatelet (prasugrel or ticagrelor) is recommended. Much higher levels of PPIs, voriconazole, citalopram/escitalopram and sertraline: lower doses or alternatives.");
+      if (n("X") === 1 && n("D") === 1) return R("Likely poor metabolizer", "high", "Clopidogrel likely poorly activated; alternative antiplatelet recommended. Higher levels of PPIs, voriconazole and some antidepressants.");
+      if (n("X") === 1) return R("Intermediate metabolizer", "mid", "Clopidogrel is activated less, so it protects less after a stent: alternatives are recommended. PPIs reach higher levels (often an advantage).");
+      return R("Likely intermediate metabolizer", "mid", "Clopidogrel may be activated less; PPI levels somewhat higher.");
+    }
+  },
+  CYP2D6: {
+    drugs: "Codeine, tramadol, tamoxifen, ondansetron, tricyclic antidepressants (amitriptyline, nortriptyline), atomoxetine, metoprolol, paroxetine",
+    rule(pair) {
+      const AV = { "*1": 1, "*2": 1, "*3": 0, "*4": 0, "*6": 0, "*7": 0, "*8": 0, "*9": 0.25, "*10": 0.25, "*12": 0, "*14": 0.5, "*17": 0.5, "*29": 0.5, "*41": 0.25 };
+      const as = AV[pair[0]] + AV[pair[1]];
+      if (as === 0) return R("Poor metabolizer · activity score 0", "high", "Codeine and tramadol give little pain relief (not converted to their active forms): use another analgesic. Tamoxifen forms less of its active metabolite. Higher levels of tricyclic antidepressants, atomoxetine, metoprolol and paroxetine.");
+      if (as <= 1) return R("Intermediate metabolizer · activity score " + as, "mid", "Less activation of codeine, tramadol and tamoxifen; somewhat higher levels of tricyclic antidepressants, atomoxetine and metoprolol.");
+      if (as <= 2.25) return R(NM + " · activity score " + as, "normal", "Standard dosing, as far as 23andMe data can tell.");
+      return R("Ultrarapid metabolizer", "fast", "Codeine and tramadol are activated too fast (risk of toxicity); ondansetron may work less well.");
+    },
+    caveat: "Incomplete: 23andMe can't see *5 deletions, gene duplications (ultrarapid metabolizers) or hybrids, and your file may lack the *4, *10 and *41 markers. A clinical CYP2D6 test could give a different result."
+  },
+  CYP2B6: {
+    drugs: "Efavirenz; also methadone, bupropion, sertraline",
+    rule(pair) {
+      const c = cats(pair, { "*1": "N", "*4": "I", "*6": "D", "*9": "D", "*18": "X" }, "N");
+      const fast = countOf(c, "I"), low = countOf(c, "D") + countOf(c, "X");
+      if (low === 2) return R("Poor metabolizer", "high", "Much higher efavirenz levels (dizziness, vivid dreams, other CNS side effects). CPIC suggests a lower efavirenz dose (400 or 200 mg/day).");
+      if (low === 1) return R("Intermediate metabolizer", "mid", "Higher efavirenz levels; CPIC suggests considering 400 mg/day.");
+      if (fast === 2) return R("Ultrarapid metabolizer", "fast", "Efavirenz: standard dose.");
+      if (fast === 1) return R("Rapid metabolizer", "fast", "Efavirenz: standard dose.");
+      return R(NM, "normal", "Standard efavirenz dose.");
+    }
+  },
+  CYP3A5: {
+    drugs: "Tacrolimus",
+    rule(pair) {
+      const c = cats(pair, { "*1": "N", "*3": "X", "*6": "X", "*7": "X" }, "U");
+      if (c.includes("U")) return R("Indeterminate (allele of uncertain function)", "unk", "One of your alleles has uncertain function.");
+      const nf = countOf(c, "N");
+      if (nf === 2) return R(NM + " (CYP3A5 expresser)", "fast", "Tacrolimus is cleared quickly: CPIC recommends a starting dose 1.5–2 times standard, with close monitoring.");
+      if (nf === 1) return R("Intermediate metabolizer (CYP3A5 expresser)", "fast", "Tacrolimus is cleared faster than average: CPIC recommends a starting dose 1.5–2 times standard, with close monitoring.");
+      return R("Poor metabolizer (CYP3A5 non-expresser)", "normal", "Standard tacrolimus starting dose. This is the most common genotype in people of European ancestry; dosing guidelines were built on it.");
+    }
+  },
+  CYP4F2: {
+    drugs: "Warfarin",
+    rule(pair) {
+      const k = countOf(pair, "*3");
+      const extra = OBS && OBS.rs12777823 && OBS.rs12777823.alleles.includes("A") ? " You also carry the rs12777823 A allele, linked to a lower warfarin dose in patients of African ancestry." : "";
+      if (!k) return R("Normal CYP4F2 activity", "normal", "No CYP4F2 adjustment to warfarin dosing." + extra);
+      return R("Reduced CYP4F2 activity (" + k + " × *3)", "mid", "Slightly more vitamin K stays in the liver, so a slightly higher warfarin dose may be needed (CPIC: about 5–10% more)." + extra);
+    }
+  },
+  TPMT: {
+    drugs: "Thiopurines (azathioprine, mercaptopurine, thioguanine)",
+    rule(pair) {
+      const nf = countOf(pair, "*1");
+      if (nf === 2) return R(NM, "normal", "Standard thiopurine doses.");
+      if (nf === 1) return R("Intermediate metabolizer", "mid", "Thiopurines build up (bone-marrow toxicity risk). CPIC recommends a reduced starting dose (about 30–80% of normal).");
+      return R("Poor metabolizer", "high", "Very high risk of life-threatening bone-marrow toxicity. CPIC recommends drastically reduced doses (about 10%, given less often) or a non-thiopurine alternative.");
+    }
+  },
+  NUDT15: {
+    drugs: "Thiopurines (azathioprine, mercaptopurine, thioguanine)",
+    rule(pair) { return REPORT_RULES.TPMT.rule(pair); }
+  },
+  DPYD: {
+    drugs: "Fluoropyrimidines (5-fluorouracil, capecitabine)",
+    rule(pair) {
+      const AV = { "Reference": 1, "c.2846A>T": 0.5, "c.1129-5923C>G (HapB3)": 0.5, "c.557A>G": 0.5 };
+      const as = pair.reduce((t, n) => t + (n in AV ? AV[n] : 0), 0);
+      if (as === 2) return R(NM + " · activity score 2", "normal", "Standard fluoropyrimidine dosing.");
+      if (as >= 1) return R("Intermediate metabolizer · activity score " + as, "mid", "Fluoropyrimidines are cleared more slowly (severe toxicity risk). CPIC recommends a 50% reduced starting dose, then adjust.");
+      return R("Poor metabolizer · activity score " + as, "high", "Very high risk of severe or fatal toxicity: CPIC recommends avoiding 5-fluorouracil and capecitabine.");
+    }
+  },
+  UGT1A1: {
+    drugs: "Atazanavir, irinotecan; bilirubin (Gilbert syndrome)",
+    rule(pair) {
+      const nf = countOf(pair, "*1");
+      if (nf === 2) return R(NM, "normal", "Standard dosing.");
+      if (nf === 1) return R("Intermediate metabolizer", "mid", "Mildly higher bilirubin possible. Atazanavir is usually fine.");
+      return R("Poor metabolizer", "high", "High chance of jaundice with atazanavir, which often leads people to stop it (CPIC: consider an alternative). Higher risk of severe neutropenia and diarrhea with irinotecan. Typical of Gilbert syndrome.");
+    }
+  },
+  G6PD: {
+    drugs: "Rasburicase, pegloticase, primaquine, tafenoquine, dapsone, methylene blue",
+    rule(pair) {
+      const def = n => !["B (reference)", "A"].includes(n);
+      const d = pair.filter(def).length;
+      const risk = "Risk of hemolytic anemia: these drugs should be avoided, or G6PD enzyme activity measured first.";
+      if (pair.length === 1) return d ? R("Deficient (one X chromosome)", "high", risk) : R("Normal (one X chromosome)", "normal", "No increased risk from the variants tested.");
+      if (d === 0) return R("Normal", "normal", "No increased risk from the variants tested.");
+      if (d === 1) return R("Variable (heterozygous)", "mid", "Enzyme activity can range from normal to deficient (X-inactivation). " + risk);
+      return R("Deficient", "high", risk);
+    }
+  },
+  NAT2: {
+    drugs: "Isoniazid, hydralazine, procainamide, sulfasalazine",
+    rule(pair) {
+      const rapid = pair.filter(n => n === "*1" || n === "*4").length;
+      if (rapid === 2) return R("Rapid acetylator", "normal", "Standard dosing; isoniazid may be cleared faster than average.");
+      if (rapid === 1) return R("Intermediate acetylator", "mid", "Somewhat slower clearance of isoniazid and hydralazine.");
+      return R("Slow acetylator", "high", "Higher isoniazid levels (more liver toxicity and nerve damage), and more drug-induced lupus with hydralazine and procainamide.");
+    }
+  },
+  BCHE: {
+    drugs: "Succinylcholine, mivacurium",
+    rule(pair) {
+      const sev = pair.filter(n => n.startsWith("A")).length;
+      if (sev === 2) return R("Deficient (poor)", "high", "Paralysis after succinylcholine or mivacurium can last hours instead of minutes: tell anesthetists before surgery.");
+      if (sev === 1) return R("Intermediate", "mid", "Effect of succinylcholine may last somewhat longer than usual.");
+      if (pair.some(n => n.startsWith("K"))) return R("Normal to mildly reduced", "normal", "The K variant alone causes only a small decrease; usually no clinical effect.");
+      return R("Normal", "normal", "Standard response to succinylcholine.");
+    }
+  },
+  SLCO1B1: {
+    drugs: "Statins, especially simvastatin (also atorvastatin, lovastatin, rosuvastatin)",
+    rule(pair) {
+      const v = countOf(pair, "521C");
+      if (v === 0) return R("Normal function", "normal", "Standard statin dosing.");
+      if (v === 1) return R("Decreased function", "mid", "Higher statin levels in blood and more risk of muscle pain or myopathy, especially with simvastatin. CPIC suggests lower doses or a different statin.");
+      return R("Poor function", "high", "Much higher statin levels and the highest myopathy risk, especially with simvastatin. CPIC suggests avoiding simvastatin and limiting doses of other statins.");
+    }
+  },
+  ABCG2: {
+    drugs: "Rosuvastatin; allopurinol response in gout",
+    rule(pair) {
+      const v = countOf(pair, "421A");
+      if (v === 0) return R("Normal function", "normal", "Standard rosuvastatin dosing.");
+      if (v === 1) return R("Decreased function", "mid", "Higher rosuvastatin levels; usual doses are generally fine, with attention to higher doses.");
+      return R("Poor function", "high", "Much higher rosuvastatin levels: CPIC suggests a lower starting dose (20 mg/day or less).");
+    }
+  },
+  VKORC1: {
+    drugs: "Warfarin",
+    rule(pair) {
+      const v = countOf(pair, "-1639A");
+      if (v === 0) return R("Normal warfarin sensitivity", "normal", "Typical warfarin dose requirement.");
+      if (v === 1) return R("Increased warfarin sensitivity", "mid", "Less VKORC1 is made, so a lower warfarin dose is usually needed (dosing algorithms include VKORC1).");
+      return R("High warfarin sensitivity", "high", "Much less VKORC1: a clearly lower warfarin dose is usually needed.");
+    }
+  },
+  "MT-RNR1": {
+    drugs: "Aminoglycosides (gentamicin, tobramycin, amikacin)",
+    rule(pair) {
+      const n = pair[0];
+      if (n === "m.1555A>G") return R("Increased risk of aminoglycoside hearing loss", "high", "Avoid aminoglycosides unless the infection is severe and there is no safe alternative: even one dose can cause permanent hearing loss.");
+      if (n === "Reference") return R("Normal risk", "normal", "No increased risk from the variants tested.");
+      return R("Uncertain risk", "unk", "Variant of uncertain significance for aminoglycoside hearing loss.");
+    }
+  }
+};
+
+function reportRow(g) {
+  const rule = REPORT_RULES[g.id];
+  const { matches, tested, hemi } = callDiplotypes(g);
+  if (!tested.length) return { geno: "Not tested", res: R("Not determined", "unk", "None of this gene's markers are in your file."), drugs: rule.drugs };
+  if (!matches.length) return { geno: "No exact match", res: R("Not determined", "unk", "Your letters don't match a combination of the alleles in the table (rare variant or genotyping error)."), drugs: rule.drugs };
+  const results = matches.map(m => ({ key: m.length === 1 ? m[0] + (hemi && g.ploidy === "X" ? " (one X)" : "") : pairKey(g, m[0], m[1]), r: rule.rule(m) }));
+  const geno = results.map(x => x.key).join(" or ");
+  const labels = [...new Set(results.map(x => x.r.label))];
+  const bases = [...new Set(results.map(x => x.r.label.split(" · ")[0]))];
+  let res;
+  if (labels.length === 1) res = results[0].r;
+  else if (bases.length === 1) {
+    const scores = [...new Set(results.map(x => x.r.label.split(" · ")[1]).filter(Boolean).map(t => t.replace("activity score ", "")))];
+    res = R(bases[0] + (scores.length ? " · activity score " + scores.join(" or ") : ""), results[0].r.tone, "Either way the phenotype is the same. " + results[0].r.effect);
+  }
+  else {
+    const order = ["high", "mid", "fast", "unk", "normal"];
+    const worst = results.slice().sort((a, b) => order.indexOf(a.r.tone) - order.indexOf(b.r.tone))[0].r;
+    res = R("Depends on phase: " + results.map(x => `${x.key} → ${x.r.label}`).join("; "), worst.tone, "23andMe can't tell which chromosome each variant is on, so either result is possible. " + worst.effect);
+  }
+  const missing = g.snps.length - tested.length;
+  let caveat = rule.caveat || "";
+  if (!rule.caveat && missing > 0) caveat = `${missing} of ${g.snps.length} markers for this gene are not in your file, so rarer alleles can't be ruled out.`;
+  return { geno, res, drugs: rule.drugs, caveat };
+}
+
+function hlaRows() {
+  const g = GENES.find(x => x.id === "HLA-B");
+  const truth = tagTruth(g);
+  const rs = [
+    { name: "HLA-B*57:01 (tag)", idx: [0], drugs: "Abacavir", pos: "Tag SNP present: possible HLA-B*57:01 carrier. Abacavir hypersensitivity risk; clinical HLA typing is required before abacavir." },
+    { name: "HLA-B*15:02 (tags)", idx: [1, 2], drugs: "Carbamazepine, oxcarbazepine, phenytoin, fosphenytoin", pos: "A *15:02 tag is present: possible carrier. Risk of severe skin reactions (SJS/TEN); clinical HLA typing is required." }
+  ];
+  return rs.map(r => {
+    const vals = r.idx.map(i => truth[i]);
+    if (vals.every(v => v === null)) return { gene: r.name, geno: "Not tested", res: R("Not determined", "unk", "Tag markers not in your file."), drugs: r.drugs };
+    const present = vals.includes("yes");
+    return { gene: r.name, geno: present ? "Tag present" : "Tag absent", res: present ? R("Possible carrier", "high", r.pos) : R("Tag not found", "normal", "Tag SNPs are proxies: a negative result does not rule out the allele, especially outside the populations the tags were found in."), drugs: r.drugs };
+  });
+}
+
+function renderReport() {
+  const box = $("#report");
+  if (!box) return;
+  if (!reportUnlocked) { box.innerHTML = ""; return; }
+  $("#pwBox").hidden = true;
+  if (!OBS) { box.innerHTML = `<p class="gene-meta">Report unlocked. Load your 23andMe file in step 1 and your report will appear here.</p>`; return; }
+  const item = (name, row) => `<div class="rep-item">
+      <div><div class="rep-gene">${esc(name)}</div><div class="rep-geno">${esc(row.geno)}</div></div>
+      <div class="rep-body">
+        <span class="badge tone-${row.res.tone}">${esc(row.res.label)}</span>
+        <p>${esc(row.res.effect)}</p>
+        <p class="drugs"><b>Drugs affected:</b> ${esc(row.drugs)}</p>
+        ${row.caveat ? `<p class="caveat">${esc(row.caveat)}</p>` : ""}
+      </div></div>`;
+  const groups = GROUPS.filter(gr => gr.ids.some(id => REPORT_RULES[id] || id === "HLA-B")).map(gr => {
+    const items = gr.ids.map(id => {
+      if (id === "HLA-B") return hlaRows().map(r => item(r.gene, r)).join("");
+      if (!REPORT_RULES[id]) return "";
+      return item(id, reportRow(GENES.find(x => x.id === id)));
+    }).join("");
+    return `<div class="rep-group"><h3>${esc(gr.name)}</h3>${items}</div>`;
+  }).join("");
+  const now = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  box.innerHTML = `<div class="rep-head"><div class="rep-meta">Generated ${esc(now)} from ${esc(FILE_INFO.label)} · ${FILE_INFO.found} of ${TOTAL_MARKERS} markers found</div>
+      <button type="button" class="secondary noprint" id="printReport">Print or save as PDF</button></div>
+    ${groups}
+    <div class="rep-disclaimer">Educational use only. Based on a limited set of 23andMe markers, which can't detect gene deletions, duplications, repeats or most rare variants, and can't tell which chromosome each variant is on. Phenotype terms follow CPIC; “normal metabolizer” replaced the older term “extensive metabolizer”. Never change a medication based on this report: talk to a pharmacist or physician, who can order a clinical-grade test.</div>`;
+  $("#printReport").addEventListener("click", () => {
+    document.body.classList.add("print-report");
+    window.print();
+    setTimeout(() => document.body.classList.remove("print-report"), 500);
+  });
+}
+
+function tryUnlock() {
+  const v = $("#pw").value.trim();
+  if (pwHash(v) === PW_HASH) {
+    reportUnlocked = true;
+    $("#pwMsg").textContent = "";
+    renderReport();
+  } else {
+    $("#pwMsg").className = "pwmsg err";
+    $("#pwMsg").textContent = "Incorrect password.";
+    $("#pw").select();
+  }
+}
+$("#unlockBtn").addEventListener("click", tryUnlock);
+$("#pw").addEventListener("keydown", e => { if (e.key === "Enter") tryUnlock(); });
+
+function renderAll() {
+  renderTabs();
+  $("#panels").innerHTML = GENES.map(renderGene).join("");
+  wirePanels();
+  renderReport();
+}
+
+function wirePanels() {
+  document.querySelectorAll(".hlToggle").forEach(cb => cb.addEventListener("change", () => {
+    highlight = cb.checked;
+    document.body.classList.toggle("hl", highlight);
+    document.querySelectorAll(".hlToggle").forEach(x => { x.checked = highlight; });
+  }));
+  document.querySelectorAll("select[data-slot]").forEach(sel => sel.addEventListener("change", () => {
+    const id = sel.dataset.gene;
+    answers[id] = answers[id] || ["", ""];
+    answers[id][+sel.dataset.slot] = sel.value;
+  }));
+  document.querySelectorAll("select[data-tag]").forEach(sel => sel.addEventListener("change", () => {
+    const id = sel.dataset.gene;
+    answers[id] = answers[id] || {};
+    answers[id][+sel.dataset.tag] = sel.value;
+  }));
+  document.querySelectorAll(".pick").forEach(b => b.addEventListener("click", () => {
+    const id = b.dataset.gene, name = b.dataset.hap;
+    const a = answers[id] = answers[id] || ["", ""];
+    if (!a[0]) a[0] = name; else if (!a[1]) a[1] = name; else { a[0] = a[1]; a[1] = name; }
+    const sels = document.querySelectorAll(`select[data-gene="${id}"][data-slot]`);
+    sels[0].value = a[0]; sels[1].value = a[1];
+  }));
+  const tr = $("#traitReveal");
+  if (tr) tr.addEventListener("click", () => {
+    traitsRevealed = !traitsRevealed;
+    document.querySelectorAll(".trait-meaning").forEach(td => td.classList.toggle("hiddenmean", !traitsRevealed));
+    tr.textContent = traitsRevealed ? "Hide meanings" : "Reveal meanings";
+  });
+  document.querySelectorAll(".checkBtn").forEach(b => b.addEventListener("click", () => {
+    const g = GENES.find(x => x.id === b.dataset.gene);
+    g.mode === "tag" ? checkTags(g, false) : checkDiplotype(g, false);
+  }));
+  document.querySelectorAll(".revealBtn").forEach(b => b.addEventListener("click", () => {
+    const g = GENES.find(x => x.id === b.dataset.gene);
+    g.mode === "tag" ? checkTags(g, true) : checkDiplotype(g, true);
+  }));
+}
+
+/* ============================================================================
+   INPUT WIRING
+   ========================================================================== */
+$("#fileInput").addEventListener("change", e => { const f = e.target.files[0]; if (f) readFile(f); });
+$("#fileLabel").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#fileInput").click(); } });
+$("#pasteBtn").addEventListener("click", () => {
+  const t = $("#pasteBox").value;
+  if (!t.trim()) { setStatus("Paste some data first.", true); return; }
+  ingest(t, "Pasted data");
+});
+const drop = $("#drop");
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => { const f = e.dataTransfer.files[0]; if (f) readFile(f); });
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("drop", e => e.preventDefault());
+
+$("#themeBtn").addEventListener("click", () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+});
+
+renderAll();
+</script>
+</body>
+</html>
